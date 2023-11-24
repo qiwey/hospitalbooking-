@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<!-- login23:11-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="../../../static/assets/dashboard/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper account-wrapper">
+    <div class="account-page">
+        <div class="account-center">
+            <div class="account-box">
+                <form class="form-signin" th:action="@{/login}" th:method="post">
+                    <div class="account-logo">
+                        <a th:href="@{/assets/dashboard}"><img
+                                alt=""
+                                src="../../../static/assets/dashboard/img/logo-dark.png"
+                                th:src="@{/assets/dashboard/img/logo-dark.png}"></a>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên người dùng hoặc email</label>
+                        <input autofocus="" class="form-control" name="username" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input class="form-control" name="password" type="password">
+                    </div>
+                    <div class="form-group text-center text-danger" th:if="${param.error}">
+                        Sai tên người dùng hoặc mật khẩu
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary account-btn" type="submit">Đăng nhập</button>
+                    </div>
+                    <div class="form-group text-center ">
+                        <a class="btn btn-outline-light" role="button"
+                           style="text-transform:none; border: rgba(0,0,0,.1) solid 2px; color: rgba(0,0,0,1);"
+                           th:href="@{/oauth2/authorization/google}">
+                            <img alt="Google sign-in"
+                                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+                                 style="margin-bottom:3px; margin-right:5px"
+                                 width="20px"/>
+                            Đăng nhập bằng Google
+                        </a>
+                    </div>
+                    <div class="form-group text-center">
+                        <a th:href="@{/forgot-password}">Quên mật khẩu?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script
+        src="../../../static/assets/dashboard/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+
+<!-- login23:12-->
+</html>

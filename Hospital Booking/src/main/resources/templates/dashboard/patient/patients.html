@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- patients23:17-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../static/assets/dashboard/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="../../../static/assets/dashboard/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css}" type="text/css">
+    <link href="../../../static/assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css}" type="text/css">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+          rel="stylesheet"
+          type="text/css">
+
+    <!-- Vendor CSS-->
+    <link href="../../../static/assets/dashboard/vendor/select2/select2.min.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/select2/select2.min.css}" type="text/css">
+    <link href="../../../static/assets/dashboard/vendor/datepicker/daterangepicker.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/datepicker/daterangepicker.css}" type="text/css">
+
+    <!-- Main CSS-->
+    <link href="../../../static/assets/dashboard/css/main.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/css/main.css}" type="text/css">
+
+    <!-- CSS Bootstrap-datepicker -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+          rel="stylesheet">
+
+
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Các bệnh nhân</h4>
+                </div>
+
+                <div class="col-sm-6 col-4 text-right m-b-20">
+                    <a class="btn btn-dark" th:href="@{/dashboard/excel/export/patients}"><i
+                            class="fa fa-download"></i>
+                        Xuất file Excel
+                    </a>
+                </div>
+
+                <div class="col-sm-2 col-5 text-right m-b-20">
+                    <a class="btn btn btn-primary btn-rounded float-right" th:href="@{/dashboard/add-patient}"><i
+                            class="fa fa-plus"></i> Thêm bệnh nhân</a>
+                </div>
+            </div>
+            <form method="get" th:action="@{/dashboard/patients}">
+                <div class="row filter-row">
+                    <div class="col-sm-1 col-md-1">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Số lượng</label>
+                            <select class="select floating" name="size" onchange="submitForm()" th:field="${page.size}">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Tìm kiếm</label>
+                            <input class="form-control floating" name="search" th:value="${param.search}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus ">
+                            <label class="focus-label">Start Date</label>
+                            <input class="form-control floating input--style-1 datetimepicker" id="startDate"
+                                   name="startDate"
+                                   th:value="${startDate}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus ">
+                            <label class="focus-label">End Date</label>
+                            <input class="form-control floating input--style-1 datetimepicker" id="endDate"
+                                   name="endDate"
+                                   th:value="${endDate}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-success btn-block">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <a class="btn btn-success btn-block"
+                           th:href="@{/dashboard/patients}">Reset</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-border table-striped custom-table datatable mb-0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Contact Number</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Last Modified</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="patient : ${page.content}">
+                                <td>
+                                    <a th:href="@{/dashboard/patient-detail/{id}(id=${patient.id})}"
+                                       th:text="${patient.fullName}"></a>
+                                </td>
+                                <td th:text="${patient.gender.value}"></td>
+                                <td th:text="${patient.contactNumber}"></td>
+                                <td th:text="${patient.email}"></td>
+                                <td th:text="${patient.address}"></td>
+                                <td th:text="${#temporals.format(patient.lastModifiedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a class="dropdown-item"
+                                           th:href="@{/dashboard/edit-patient/{id}(id=${patient.id})}">
+                                            <i class="fa fa-pencil m-r-5"></i> Chỉnh sửa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${page.totalPages > 1}">
+                <div class="col-sm-12 col-md-5">
+                    <div style="padding-top: 0.85em">
+                        Trang số [[${page.number + 1}]] trên tổng số [[${page.totalPages}]] trang
+                        của [[${page.totalElements}]] kết quả
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7 ">
+                    <nav aria-label="navigation example">
+                        <ul class="pagination justify-content-end" style="margin: 2px 0">
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/patients(size=${page.size}, page=0)}">&laquo;</a>
+                            </li>
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/patients(size=${page.size}, page=${page.number - 1})}">&lsaquo;</a>
+                            </li>
+
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/patients(size=${page.size}, page=${page.number + 1})}">&rsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/patients(size=${page.size}, page=${page.totalPages - 1})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+
+<!-- Đảm bảo bạn đã đưa vào mã HTML script của jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Thêm đoạn mã jQuery -->
+<script>
+    $(document).ready(function () {
+        // Sử dụng sự kiện "click" trên các hàng của bảng
+        $('table tbody tr').click(function () {
+            // Lấy ID của bệnh nhân từ thuộc tính data-id
+            var patientId = $(this).data('id');
+
+            // Gửi yêu cầu AJAX để lấy thông tin chi tiết của bệnh nhân dựa trên patientId
+            $.ajax({
+                url: '/get-patient-details/' + patientId, // Điều hướng đến URL phù hợp của bạn
+                type: 'GET',
+                success: function (data) {
+                    // Hiển thị thông tin chi tiết bệnh nhân (data) ở đây, ví dụ: alert(data);
+                    // Bạn có thể sử dụng modal hoặc div hiện thông tin bệnh nhân tùy theo thiết kế của bạn.
+                }
+            });
+        });
+    });
+</script>
+
+
+<!-- JavaScript Bootstrap-datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function submitForm() {
+        document.querySelector("form").submit();
+    }
+</script>
+<script
+        src="../../../static/assets/dashboard/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/jquery.dataTables.min.js"
+        th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/dataTables.bootstrap4.min.js"
+        th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/moment.min.js"
+        th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+
+<script src="../../../static/assets/dashboard/vendor/jquery/jquery.min.js"
+        th:src="@{/assets/dashboard/vendor/jquery/jquery.min.js}"></script>
+<!-- Vendor JS-->
+<script src="../../../static/assets/dashboard/vendor/select2/select2.min.js"
+        th:src="@{/assets/dashboard/vendor/select2/select2.min.js}"></script>
+<script src="../../../static/assets/dashboard/vendor/jquery-validate/jquery.validate.min.js"
+        th:src="@{/assets/dashboard/vendor/jquery-validate/jquery.validate.min.js}"></script>
+<script src="../../../static/assets/dashboard/vendor/bootstrap-wizard/bootstrap.min.js"
+        th:src="@{/assets/dashboard/vendor/bootstrap-wizard/bootstrap.min.js}"></script>
+<script src="../../../static/assets/dashboard/vendor/bootstrap-wizard/jquery.bootstrap.wizard.min.js"
+        th:src="@{/assets/dashboard/vendor/bootstrap-wizard/jquery.bootstrap.wizard.min.js}"></script>
+<script src="../../../static/assets/dashboard/vendor/datepicker/moment.min.js"
+        th:src="@{/assets/dashboard/vendor/datepicker/moment.min.js}"></script>
+<script src="../../../static/assets/dashboard/vendor/datepicker/daterangepicker.js"
+        th:src="@{/assets/dashboard/vendor/datepicker/daterangepicker.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+
+<!-- Main JS-->
+<script src="../../../static/assets/dashboard/plugins/light-gallery/js/global.js"
+        th:src="@{/assets/dashboard/plugins/light-gallery/js/global.js}"></script>
+</body>
+

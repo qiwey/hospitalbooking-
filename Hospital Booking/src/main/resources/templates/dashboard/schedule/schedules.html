@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- calendar23:59-->
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            content="width=device-width, initial-scale=1.0, user-scalable=0"
+            name="viewport"
+    />
+    <link
+            rel="shortcut icon"
+            th:href="@{/assets/dashboard/img/favicon.ico}"
+            type="image/x-icon"
+    />
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/select2.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/style.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/aos.css}"
+            type="text/css"
+    />
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div
+            th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"
+    ></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Lịch làm việc</h4>
+                </div>
+            </div>
+            <form
+                    method="get"
+                    th:action="@{/dashboard/schedule/{id}(id=${userId})}"
+            >
+                <div class="row filter-row">
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Năm</label>
+                            <select
+                                    class="select floating"
+                                    id="year-select"
+                                    name="year"
+                                    onchange="populateWeekOptions()"
+                                    th:with="currentYear = ${#calendars.year(#calendars.createNow())}"
+                            >
+                                <option
+                                        th:text="${currentYear - 1}"
+                                ></option>
+                                <option
+                                        selected
+                                        th:text="${currentYear}"
+                                ></option>
+                                <option
+                                        th:text="${currentYear + 1}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Tuần</label>
+                            <select
+                                    class="select floating"
+                                    id="week-select"
+                                    name="week"
+                                    onchange="formSubmit()"
+                            ></select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form method="post" th:action="@{/dashboard/schedule/{id}(id=${userId})}">
+                <input id="week-form" name="week" type="hidden">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table
+                                    class="table table-striped custom-table mb-0"
+                            >
+                                <thead>
+                                <tr>
+                                    <th>Thứ 2</th>
+                                    <th>Thứ 3</th>
+                                    <th>Thứ 4</th>
+                                    <th>Thứ 5</th>
+                                    <th>Thứ 6</th>
+                                    <th>Thứ 7</th>
+                                    <th>Chủ nhật</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                        <label class="btn btn-light btn-block"
+                                               style="border-radius: 3px;"
+                                        >07:30 - 09:50
+                                            <input autocomplete="off" class="time-radio d-none"
+                                                   name="time"
+                                                   th:value="${i + ': 07:30 - 09:50'}"
+                                                   type="checkbox"/>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                        <label class="btn btn-light btn-block"
+                                               style="border-radius: 3px;"
+                                        >10:00 - 12:20
+                                            <input autocomplete="off" class="time-radio d-none"
+                                                   name="time"
+                                                   th:value="${i + ': 10:00 - 12:20'}"
+                                                   type="checkbox"/>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                        <label class="btn btn-light btn-block"
+                                               style="border-radius: 3px;"
+                                        >12:50 - 15:10
+                                            <input autocomplete="off" class="time-radio d-none"
+                                                   name="time"
+                                                   th:value="${i + ': 12:50 - 15:10'}"
+                                                   type="checkbox"/>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                        <label class="btn btn-light btn-block"
+                                               style="border-radius: 3px;"
+                                        >15:20 - 17:50
+                                            <input autocomplete="off" class="time-radio d-none"
+                                                   name="time"
+                                                   th:value="${i + ': 15:20 - 17:50'}"
+                                                   type="checkbox"/>
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-t-20 text-center">
+                    <button class="btn btn-primary submit-btn">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"
+></script>
+<script
+        th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"
+></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+            document.querySelectorAll("label").forEach((label) => {
+                label.classList.remove("btn-success", "text-white");
+                label.classList.add("btn-light");
+            });
+
+            const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkedCheckboxes.forEach((checkedCheckbox) => {
+                checkedCheckbox.parentElement.classList.remove("btn-light");
+                checkedCheckbox.parentElement.classList.add("btn-success", "text-white");
+            });
+        });
+    });
+</script>
+<script>
+
+
+    function populateWeekOptions() {
+        const yearSelect = document.getElementById("year-select");
+        const weekSelect = document.getElementById("week-select");
+        const year = parseInt(yearSelect.value);
+
+        // Clear existing options
+        weekSelect.innerHTML = "";
+
+        // Function to get the date range of a week
+        function getWeekRange(weekNumber, year) {
+            const januaryFirst = new Date(year, 0, 1);
+            const daysToMonday =
+                1 - januaryFirst.getDay() < 0
+                    ? 8 - januaryFirst.getDay()
+                    : 1 - januaryFirst.getDay();
+            const firstMonday = new Date(
+                year,
+                0,
+                1 + daysToMonday + 7 * (weekNumber - 1)
+            );
+            const lastSunday = new Date(
+                year,
+                0,
+                1 + daysToMonday + 7 * weekNumber - 1
+            );
+            return {start: firstMonday, end: lastSunday};
+        }
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let dateParam = new Date(urlParams.get("week") || Date.now());
+        for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
+            const weekRange = getWeekRange(weekNumber, year);
+            const option = document.createElement("option");
+            const date = new Date(
+                weekRange.start.getTime() + 24 * 60 * 60 * 1000
+            );
+            option.value = date.toISOString().substring(0, 10);
+            option.selected = dateParam >= weekRange.start;
+            option.text =
+                weekRange.start.getDate() +
+                "/" +
+                (weekRange.start.getMonth() + 1) +
+                " đến " +
+                weekRange.end.getDate() +
+                "/" +
+                (weekRange.end.getMonth() + 1);
+            weekSelect.appendChild(option);
+        }
+
+        const week = document.querySelector('#week-form');
+        week.value = weekSelect.value;
+    }
+
+    // Event listener for year selection
+    const yearSelect = document.getElementById("year-select");
+
+    // Initial population of weeks
+    populateWeekOptions();
+
+    function formSubmit() {
+        document.querySelector("form").submit();
+    }
+
+</script>
+</body>
+<!-- calendar24:03-->
+</html>

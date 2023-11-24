@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Title</title>
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+
+
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+  <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+</head>
+<body>
+<div class="text-center">
+  <h1>Contact Us</h1>
+</div>
+
+<form  id="myform" name="myform" 
+       style="max-width: 600px; margin: 0 auto" 
+       method="post"
+        th:action="@{/lien-he}" 
+       th:object="${newContactForm}">
+  <div class="form-group">
+    <label>Họ và Tên</label>
+    <input class="form-control" th:field="*{fullName}" type="text">
+    <span class="text-danger" th:errors="*{fullName}"
+          th:if="${#fields.hasErrors('fullName')}"></span>
+  </div>
+    </div>
+    <label>Email address:</label>
+    <input type="email" class="form-control"  name="email" placeholder="name@example.com" >
+    <span style="color: red" th:if="${#fields.hasErrors('email')}" > Please check Email</span>
+  </div>
+
+  <div class="form-group">
+    <label>Subject:</label>
+    <input type="text" class="form-control"  name="subject" placeholder="Subject">
+    <span style="color: red" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"> Please check Subject</span>
+
+  </div>
+
+  <div class="form-group">
+    <label>Content</label>
+    <textarea class="form-control" name="content" rows="5"></textarea>
+    <span style="color: red" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"> Please check Content</span>
+
+  </div>
+<!--  <div class="form-group">-->
+<!--    <label for="file_upload">Attach File</label>-->
+<!--    <input type="file" class="form-control-file" id="file_upload" name="file_upload">-->
+<!--  </div>-->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</html>

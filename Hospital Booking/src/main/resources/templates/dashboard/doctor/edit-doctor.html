@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html
+    lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+
+<!-- add-doctor24:06-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          href="assets/img/favicon.ico">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          href="assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/assets/dashboard/css/bootstrap-datetimepicker.min.css}"
+          href="assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/assets/dashboard/css/style.css}"
+          href="assets/css/style.css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Chỉnh sửa bác sĩ</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form th:action="@{/edit-doctor}" method="post" enctype="multipart/form-data"
+                          th:object="${updateDoctorDTO}">
+                        <input type="hidden" name="id" th:value="${updateDoctorDTO.id}">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tên đầy đủ <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="fullName" type="text"
+                                           th:value="${updateDoctorDTO.fullName}">
+                                    <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
+                                          class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>ID nhân viên <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="userId" type="number"
+                                           th:value="${updateDoctorDTO.userId}">
+                                    <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"
+                                          class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Ngày sinh <span class="text-danger">*</span></label>
+                                    <div class="cal-icon">
+                                        <input class="form-control floating datetimepicker" type="text"
+                                               name="dateOfBirth"
+                                               th:value="${#temporals.format(updateDoctorDTO.dateOfBirth, 'MMMM dd yyyy')}"
+                                        >
+                                    </div>
+                                    <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"
+                                          class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Phòng ban <span class="text-danger">*</span></label>
+                                    <select class="form-control select" name="departmentId">
+                                        <option th:each="department : ${departments}" th:value="${department.id}"
+                                                th:text="${department.name}"
+                                                th:selected="${department.id == updateDoctorDTO.departmentId}"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Ảnh đại diện <span class="text-danger">*</span></label>
+                                    <div class="profile-upload">
+                                        <div class="upload-img">
+                                            <img alt="" th:src="@{/assets/dashboard/img/user.jpg}">
+                                        </div>
+                                        <div class="upload-input">
+                                            <input type="file" class="form-control" accept="image/*"
+                                                   name="profilePicture">
+                                        </div>
+                                    </div>
+                                    <span th:if="${#fields.hasErrors('profilePicture')}" th:errors="*{profilePicture}"
+                                          class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group gender-select">
+                                    <label class="gen-label">Giới tính <span class="text-danger">*</span></label>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" name="gender" class="form-check-input"
+                                                   th:checked="${updateDoctorDTO.gender} == null ? true : ${updateDoctorDTO.gender.toString().equals('MALE')}"
+                                                   value="MALE">Nam
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" name="gender" class="form-check-input"
+                                                   th:checked="${updateDoctorDTO.gender} == null ? false : ${updateDoctorDTO.gender.toString().equals('FEMALE')}"
+                                                   value="FEMALE">Nữ
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" name="gender" class="form-check-input"
+                                                   th:checked="${updateDoctorDTO.gender} == null ? false : ${updateDoctorDTO.gender.toString().equals('OTHER')}"
+                                                   value="OTHER">Khác
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Short Biography</label>
+                            <textarea class="form-control" rows="3" cols="30" name="biography"
+                                      th:text="${updateDoctorDTO.biography}"
+                            ></textarea>
+                            <span th:if="${#fields.hasErrors('biography')}" th:errors="*{biography}"
+                                  class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="display-block">Trạng thái <span class="text-danger">*</span></label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="product_active" name="activeStatus"
+                                       value="true"
+                                       th:checked="${updateDoctorDTO.activeStatus} == null ? true : ${updateDoctorDTO.activeStatus}">
+                                <label class="form-check-label" for="product_active">
+                                    Hoạt động
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="product_inactive" name="activeStatus"
+                                       value="false"
+                                       th:checked="${updateDoctorDTO.activeStatus} == null ? false : ${!updateDoctorDTO.activeStatus}">
+                                <label class="form-check-label" for="product_inactive">
+                                    Không hoạt động
+                                </label>
+                            </div>
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn">Chỉnh sửa</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script
+    th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"
+    src="assets/js/jquery-3.2.1.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/popper.min.js}"
+    src="assets/js/popper.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/bootstrap.min.js}"
+    src="assets/js/bootstrap.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"
+    src="assets/js/jquery.slimscroll.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/select2.min.js}"
+    src="assets/js/select2.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/moment.min.js}"
+    src="assets/js/moment.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"
+    src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<script
+    th:src="@{/assets/dashboard/js/app.js}"
+    src="assets/js/app.js"></script>
+</body>
+
+
+<!-- add-doctor24:06-->
+</html>

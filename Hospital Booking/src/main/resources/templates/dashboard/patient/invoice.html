@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <title>Hóa đơn điện tử</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js' type='text/javascript'></script>
+    <style>::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: lightskyblue;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: lightskyblue;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+    body {
+        background-color: lightskyblue;
+        font-family: 'Calibri', sans-serif !important;
+    }
+
+    img {
+        height: 230px;
+        width: 890px;
+    }
+
+    .mt-100 {
+        margin-top: 50px;
+    }
+
+    .mb-100 {
+        margin-bottom: 50px;
+    }
+
+    .card {
+        border-radius: 1px !important;
+    }
+
+    .card-header {
+
+        background-color: #fff;
+    }
+
+    .card-header:first-child {
+        border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    }
+
+    .btn-sm, .btn-group-sm > .btn {
+        padding: .25rem .5rem;
+        font-size: .765625rem;
+        line-height: 1.5;
+        border-radius: .2rem;
+    }</style>
+</head>
+<body className='snippet-body'>
+<div class="container mt-100 mb-100">
+    <div id="ui-view">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    Mã hóa đơn thanh toán: <strong th:text="${'#'+ payment.id}"></strong>
+                    <!--            <div class="pull-right">-->
+                    <!--                <a class="btn btn-sm btn-info" href="#" data-abc="true"><i class="fa fa-print mr-1"></i> Print</a>-->
+                    <!--                <a class="btn btn-sm btn-info" href="#" data-abc="true"><i class="fa fa-file-text-o mr-1"></i> Save</a>-->
+                    <!--            </div>-->
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-4">
+                            <h6 class="mb-3">Thông tin chi nhánh bệnh viện:</h6>
+                            <div><strong>MedicalCare</strong></div>
+                            <div>208 Nguyễn Hữu Cảnh, Phường 22, Q.Bình Thạnh, Hồ Chí Minh</div>
+                            <div>Email: benhvienVinmec@email.com</div>
+                            <div>Điện thoại: 1900636699</div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <h6 class="mb-3">Bệnh nhân:</h6>
+                            <div><strong th:text="${patient.fullName}"></strong></div>
+                            <div>Ngày sinh: <span th:text="${patient.dateOfBirth}"></span></div>
+                            <div>Địa chỉ: <span th:text="${patient.address}"> </span></div>
+                            <div>Nơi cấp BHYT: <span th:text="${patient.insuranceProvider.value}"> </span></div>
+                            <div>Email:<span th:text="${patient.email}"> </span></div>
+                            <div>Điện thoại: <span th:text="${patient.contactNumber}"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="center">#</th>
+                                <th>Tên dịch vụ</th>
+                                <th>Mô tả dịch vụ</th>
+                                <th class="center">Loại dịch vụ</th>
+                                <th class="right">Chất lượng</th>
+                                <th class="right">Giá cả</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="center">1</td>
+                                <td class="left" th:text="${payment.appointment.service.name}"></td>
+                                <td class="left"
+                                    th:text="${payment.appointment.service.shortDescription}"></td>
+                                <td class="center" th:text="${payment.appointment.service.type.value}"></td>
+                                <td class="right" th:text="${payment.appointment.service.quality.value}"></td>
+                                <td class="right"
+                                    th:text="${#numbers.formatDecimal(payment.appointment.service.price, 0, 'POINT', 0, 'COMMA') + ' vnđ'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <!--                        <div class="col-lg-4 col-sm-5"><img alt="Ảnhr bệnh viện"-->
+                        <!--                                                            class="col-md-12"-->
+                        <!--                                                            src="https://insmart.com.vn/wp-content/uploads/2021/06/Vinmec-2.jpg">-->
+                        <!--                        </div>-->
+                        <div class="col-lg-4 col-sm-5 ml-auto">
+                            <table class="table table-clear">
+                                <tbody>
+                                <!--                        <tr>-->
+                                <!--                            <td class="left"><strong>Hóa đơn tạm: </strong></td>-->
+                                <!--                            <td class="right" th:text="${payment.getAppointment().getService().getPrice()}"></td>-->
+                                <!--                        </tr>-->
+                                <!--                        <tr>-->
+                                <!--                            <td class="left"><strong>Hỗ trợ BHYT: </strong></td>-->
+                                <!--                            <td class="right">0%</td>-->
+                                <!--                        </tr>-->
+                                <!--                        <tr>-->
+                                <!--                            <td class="left"><strong>VAT (10%)</strong></td>-->
+                                <!--                            <td class="right" th:text="${VAT}"></td>-->
+                                <!--                        </tr>-->
+                                <tr>
+                                    <td class="left"><strong>Tổng chi phí: </strong></td>
+                                    <td class="right"
+                                        th:text="${#numbers.formatDecimal(totalPrice, 0, 'POINT', 0, 'COMMA') + ' vnđ'}">
+                                        <strong>VNĐ</strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:if="${#strings.equals(payment.paymentStatus, 'UNPAID')}">
+                                <a class="btn btn-success" id="paymentButton"
+                                   th:href="@{/payment/create_payment/{id}(id=${payment.id})}">
+                                    <i class="fa fa-paper-plane mr-1"></i>Thanh toán</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'
+        type='text/javascript'></script>
+<script src='#' type='text/javascript'></script>
+<script src='#' type='text/javascript'></script>
+<script src='#' type='text/javascript'></script>
+<script type='text/javascript'>var myLink = document.querySelector('a[href="#"]');
+myLink.addEventListener('click', function (e) {
+    e.preventDefault();
+});</script>
+
+</body>
+</html>

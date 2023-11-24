@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- departments23:21-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/style.css}" type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-5 col-5">
+                    <h4 class="page-title">Danh sách chuyên mục</h4>
+                </div>
+                <div class="col-sm-7 col-7 text-right m-b-30">
+                    <a class="btn btn-primary btn-rounded" th:href="@{/dashboard/add-category}"><i
+                            class="fa fa-plus"></i>
+                        Thêm chuyên mục</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th>Tên chuyên mục</th>
+                                <th>Mô tả</th>
+                                <th>Số lượng bài viết</th>
+                                <th>Trạng thái</th>
+                                <th class="text-right">Tác vụ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="category : ${categories}">
+                                <td><a th:href="@{/dashboard/articles(categoryId=${category.id})}"
+                                       th:text="${category.name}"></a></td>
+                                <td th:text="${category.description}"></td>
+                                <td th:text="${category.numberOfArticles}"></td>
+                                <td>
+                                    <span
+                                            th:class=" ${category.activeStatus ? ' status-green custom-badge' : 'status-red custom-badge'}"
+                                            th:text="${category.activeStatus ? 'Hoạt động' : 'Không hoạt động'}"
+                                    >
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a class="dropdown-item"
+                                           th:href="@{/dashboard/edit-category/{id}(id=${category.id})}">
+                                            <i class="fa fa-pencil m-r-5"></i> Chỉnh sửa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+<!-- departments23:21-->
+</html>

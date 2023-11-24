@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- add-doctor24:06-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../static/assets/dashboard/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="../../../static/assets/dashboard/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap-datetimepicker.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Chỉnh sửa trang chủ</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form enctype="multipart/form-data" method="post" th:action="@{/dashboard/edit-homepage}"
+                          th:object="${homePageInfo}">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tên bệnh viện</label>
+                                    <input class="form-control" name="hospitalName"
+                                           th:field="*{hospitalName}"
+                                           type="text">
+                                    <span class="text-danger" th:errors="*{hospitalName}"
+                                          th:if="${#fields.hasErrors('hospitalName')}"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Email</label>
+                                    <input class="form-control floating" name="email"
+                                           th:field="*{email}"
+                                           type="text">
+                                    <span class="text-danger" th:errors="*{email}"
+                                          th:if="${#fields.hasErrors('email')}"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Số điện thoại </label>
+                                    <input class="form-control floating" name="contactNumber"
+                                           th:value="*{phoneNumber}"
+                                           type="text">
+                                    <span class="text-danger" th:errors="*{phoneNumber}"
+                                          th:if="${#fields.hasErrors('phoneNumber')}"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Địa chỉ</label>
+                                    <input class="form-control floating" name="address"
+                                           th:field="*{address}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Logo</label>
+                                        <div>
+                                            <input class="form-control upload" name="logo" type="file">
+                                            <small class="form-text text-muted">Max. file size: 5 MB. Allowed images:
+                                                jpg, gif, png.</small>
+                                        </div>
+                                        <div>
+                                            <div class="product-thumbnail">
+                                                <img alt=""
+                                                     class="img-thumbnail img-fluid img-preview"
+                                                     th:src="@{/i/{fileName}(fileName=*{logoUrl})}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Ảnh giới thiệu</label>
+                                        <div>
+                                            <input class="form-control upload1" name="aboutImage" type="file">
+                                            <small class="form-text text-muted">Max. file size: 5 MB. Allowed images:
+                                                jpg, gif, png.</small>
+                                        </div>
+                                        <div>
+                                            <div class="product-thumbnail">
+                                                <img alt="" class="img-thumbnail img-fluid img-preview1"
+                                                     th:src="@{/i/{fileName}(fileName=*{aboutUsImg})}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="focus-label">Tiêu đề giới thiệu chung</label>
+                                    <textarea class="form-control floating"
+                                              rows="2"
+                                              th:field="*{aboutUsTitle}"
+                                              th:text="*{aboutUsTitle}"
+                                              type="text">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="focus-label">Giới thiệu chung</label>
+                                    <textarea class="form-control floating"
+                                              rows="6"
+                                              th:field="*{aboutUsDesc}"
+                                              th:text="*{aboutUsDesc}"
+                                              type="text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="focus-label">Tiêu đề giới thiệu chuyên khoa</label>
+                                    <textarea class="form-control floating"
+                                              th:field="*{departmentTitle}"
+                                              th:text="*{departmentTitle}"
+                                              type="text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="focus-label">Nội dung giới thiệu chuyên khoa</label>
+                                    <textarea class="form-control floating"
+                                              rows="6"
+                                              th:field="*{departmentDesc}"
+                                              th:text="*{departmentDesc}"
+                                              type="text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="focus-label">Tiêu đề giới thiệu bác sĩ</label>
+                                    <textarea class="form-control floating"
+                                              th:field="*{doctorTitle}"
+                                              th:text="*{doctorTitle}"
+                                              type="text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="focus-label">Nội dung giới thiệu bác sĩ</label>
+                                    <textarea class="form-control floating"
+                                              rows="6"
+                                              th:field="*{doctorDesc}"
+                                              th:text="*{doctorDesc}"
+                                              type="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn">Chỉnh sửa</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<script>
+    let file = document.querySelector('.upload');
+    let img = document.querySelector('.img-preview');
+    file.addEventListener('change', function () {
+        const [file] = this.files;
+        if (file) {
+            img.src = URL.createObjectURL(file);
+        }
+    });
+    let file1 = document.querySelector('.upload1');
+    let img1 = document.querySelector('.img-preview1');
+    file1.addEventListener('change', function () {
+        const [file] = this.files;
+        if (file) {
+            img1.src = URL.createObjectURL(file);
+        }
+    });
+</script>
+</body>
+
+
+<!-- add-doctor24:06-->
+</html>

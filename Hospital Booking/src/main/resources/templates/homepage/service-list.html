@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${home.hospitalName}"></title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+</head>
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<!-- END nav -->
+<section class="ftco-section p-0">
+    <div class="container-fluid pt-5 pb-4 mb-5"
+         style="background-image: url('https://cdn.bookingcare.vn/fo/w1920/2023/11/01/140311-background5.png')">
+        <div class="justify-content-center mb-5 pb-2 container">
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-8 text-center heading-section ftco-animate">
+                    <form th:action="@{/dich-vu}">
+                        <div class="form-group row flex justify-content-around">
+                            <input class="form-control" name="search" placeholder="Tìm kiếm dịch vụ"
+                                   type="text">
+                            <!--                            <button class="btn btn-primary py-3 px-4 col-md-2">Tìm kiếm</button>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--            <div class="row justify-content-center">-->
+            <!--                <div class="form-group col-md-3">-->
+            <!--                    <div class="form-field">-->
+            <!--                        <div class="select-wrap ">-->
+            <!--                            <select class="form-control w-100" name="">-->
+            <!--                                <option selected value="">Chuyên khoa</option>-->
+            <!--                                <option>Dị ứng</option>-->
+            <!--                                <option>Răng Hàm Mặt</option>-->
+            <!--                                <option>Nội khoa</option>-->
+            <!--                            </select>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="form-group col-md-3">-->
+            <!--                    <div class="form-field">-->
+            <!--                        <div class="select-wrap">-->
+            <!--                            <select class="form-control w-100" name="">-->
+            <!--                                <option selected value="">Khoảng giá</option>-->
+            <!--                                <option>Dị ứng</option>-->
+            <!--                                <option>Răng Hàm Mặt</option>-->
+            <!--                                <option>Nội khoa</option>-->
+            <!--                            </select>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 ftco-animate">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 ftco-animate" th:each="service : ${page.content}">
+                        <div class="staff">
+                            <div class="img-wrap d-flex align-items-stretch">
+                                <div
+                                        class="img align-self-stretch"
+                                        th:style="'background-image: url(/i/' + ${service.doctor.profilePicture} + ')'"
+                                >
+                                </div>
+                            </div>
+                            <div class="text pt-3 text-center">
+                                <h3 th:text="${service.type.value + ' - ' + service.quality.value + ' - ' + service.name}">
+                                    Dr. Lloyd Wilson</h3>
+                                <p class="text-primary"
+                                   th:text="${'Giá: ' + #numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA') + ' vnđ'}"></p>
+                                <span class="position mb-2"
+                                      th:text="${service.doctor.department.name}">Neurologist</span>
+                                <div class="faded">
+                                    <p class="text-justify"
+                                       th:text="${service.shortDescription}"></p>
+                                    <div class="button-custom ftco-social order-lg-last mb-0 ">
+                                        <div>
+                                            <p class="btn btn-secondary py-2 px-3">
+                                                <a class="text-white" th:href="@{/dat-lich(serviceId=${service.id})}">
+                                                    Đặt lịch khám
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters my-5" th:if="${page.content.isEmpty()}">
+                    <div class="col text-center">
+                        Không có kết quả
+                    </div>
+                </div>
+                <div class="row no-gutters my-5" th:if="${!page.content.isEmpty()}">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li th:if="${!page.first}"><a
+                                        th:href="@{/dich-vu(page=${page.number - 1}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-back"></i></a></li>
+                                <li th:classappend="${page.number + 1 == i  ?'active':''}"
+                                    th:each="i : ${#numbers.sequence(
+                                        (page.totalPages > 4
+                                            ? (page.number > 3
+                                                ? (page.number > page.totalPages - 2
+                                                    ? page.totalPages - 3
+                                                        : page.number - 1)
+                                                : 1)
+                                            : 1 ),
+                                        (page.totalPages > 4
+                                            ? (page.number > page.totalPages - 3
+                                                ? page.totalPages
+                                                : (page.number > 2
+                                                    ? page.number + 3
+                                                    : 5))
+                                            : page.totalPages)
+                                      )}">
+                                    <a
+                                            th:href="@{/dich-vu(page=${i - 1}, search=${param.search})}"
+                                            th:text="${i}">
+                                    </a>
+                                </li>
+                                <li th:if="${!page.last}"><a
+                                        th:href="@{/dich-vu(page=${page.number + 1}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-forward"></i></a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+
+
+<!-- loader -->
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle class="path-bg" cx="24" cy="24" fill="none" r="22" stroke="#eeeeee" stroke-width="4"/>
+        <circle class="path" cx="24" cy="24" fill="none" r="22" stroke="#F96D00" stroke-miterlimit="10"
+                stroke-width="4"/>
+    </svg>
+</div>
+
+
+<script th:src="@{/assets/homepage/js/jquery.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/assets/homepage/js/popper.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.easing.1.3.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/assets/homepage/js/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/assets/homepage/js/aos.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.timepicker.min.js}"></script>
+<script th:src="@{/assets/homepage/js/scrollax.min.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script th:src="@{/assets/homepage/js/google-map.js}"></script>
+<script th:src="@{/assets/homepage/js/main.js}"></script>
+
+</body>
+</html>

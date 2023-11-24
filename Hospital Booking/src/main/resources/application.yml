@@ -1,0 +1,57 @@
+server:
+  port: 8080
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 424678637712-4rkocqv20t5km94dkhlef96j4riis985.apps.googleusercontent.com
+            client-secret: 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
+  thymeleaf:
+    cache: false
+  messages:
+    basename: messages
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://localhost:3306/HospitalBooking?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Myp@ssword
+  jpa:
+    open-in-view: false
+    hibernate:
+      #      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        enable_lazy_load_no_trans: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yrdictionary@gmail.com
+    password: ufssouzilwyijxmr
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+storage:
+  location: uploads
+  max-file-size: 10MB
+  allowed-extensions: png, jpg, jpeg, bmp
+jwt:
+  secret-key: 404E635266556A586E32723575B87841D0F3C4F5F624B6476D7A6D7A307A337A
+  access-expiration: 7200000
+  refresh-expiration: 1209600000
+  confirm-expiration: 900000
+  

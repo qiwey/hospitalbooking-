@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- add-doctor24:06-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="assets/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="assets/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap-datetimepicker.min.css}"
+          type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Chỉnh sửa dịch vụ</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form method="post" th:action="@{/dashboard/edit-service/{id}(id=${updateServiceDTO.id})}"
+                          th:object="${updateServiceDTO}">
+                        <input name="id" th:value="${updateServiceDTO.id}" type="hidden">
+                        <div class="form-group">
+                            <label>Tên dịch vụ <span class="text-danger">*</span></label>
+                            <input class="form-control" name="name" th:value="${updateServiceDTO.name}" type="text">
+                            <span class="text-danger" th:errors="*{name}"
+                                  th:if="${#fields.hasErrors('name')}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả nhanh <span class="text-danger">*</span></label>
+                            <textarea class="form-control" cols="30" name="shortDescription" rows="4"
+                                      th:field="*{shortDescription}"></textarea>
+                            <span class="text-danger" th:errors="*{shortDescription}"
+                                  th:if="${#fields.hasErrors('shortDescription')}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả đầy đủ <span class="text-danger">*</span></label>
+                            <textarea class="form-control" cols="30" id="editor" name="fullDescription" rows="4"
+                                      th:field="*{fullDescription}"></textarea>
+                            <span class="text-danger" th:errors="*{fullDescription}"
+                                  th:if="${#fields.hasErrors('fullDescription')}"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Loại dịch vụ <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="type" th:field="*{type}">
+                                        <option th:selected="${updateServiceDTO.type.toString().equalsIgnoreCase('CONSULTATION')}"
+                                                value="CONSULTATION"
+                                        > Tư vấn
+                                        </option>
+                                        <option th:selected="${updateServiceDTO.type.toString().equalsIgnoreCase('TREATMENT')}"
+                                                value="TREATMENT"
+                                        >Điều trị
+                                        </option>
+                                    </select>
+                                    <span class="text-danger" th:errors="*{type}"
+                                          th:if="${#fields.hasErrors('type')}"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Chất lượng dịch vụ <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="quality" th:field="*{quality}">
+                                        <option th:selected="${updateServiceDTO.quality.toString().equalsIgnoreCase('FREE')}"
+                                                value="FREE"
+                                        >Miễn phí
+                                        </option>
+                                        <option th:selected="${updateServiceDTO.quality.toString().equalsIgnoreCase('STANDARD')}"
+                                                value="STANDARD"
+                                        >Tiêu chuẩn
+                                        </option>
+                                        <option th:selected="${updateServiceDTO.quality.toString().equalsIgnoreCase('PREMIUM')}"
+                                                value="PREMIUM"
+                                        >Cao cấp
+                                        </option>
+                                    </select>
+                                    <span class="text-danger" th:errors="*{quality}"
+                                          th:if="${#fields.hasErrors('quality')}"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Giá <span class="text-danger">*</span></label>
+                                    <input class="form-control" id="priceInput" name="price"
+                                           th:value="${updateServiceDTO.price}"
+                                           type="text"
+                                    >
+                                    <span class="text-danger" th:errors="*{price}"
+                                          th:if="${#fields.hasErrors('price')}"></span>
+                                </div>
+                            </div>
+                            <!--                            <div class="col-sm-6 col-md-6">-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label>ID bác sĩ <span class="text-danger">*</span></label>-->
+                            <!--                                    <input class="form-control" name="doctorId" type="number"-->
+                            <!--                                           th:value="${updateServiceDTO.doctorId}">-->
+                            <!--                                    <span th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"-->
+                            <!--                                          class="text-danger"></span>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>Phòng ban <span class="text-danger">*</span></label>
+                                    <select class="form-control select" id="departmentSelect" name="departmentName">
+                                        <option th:each="doctor : ${doctors}"
+                                                th:selected="${doctor.userId == updateServiceDTO.doctorId}"
+                                                th:text="${doctor.departmentName}"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>Bác sĩ <span class="text-danger">*</span></label>
+                                    <select class="form-control select" id="doctorSelect" name="doctorId">
+                                        <option th:data-department="${doctor.departmentName}"
+                                                th:each="doctor : ${doctors}"
+                                                th:selected="${doctor.userId == updateServiceDTO.doctorId}"
+                                                th:text="${doctor.fullName}"
+                                                th:value="${doctor.userId}"
+                                        ></option>
+                                        <span class="text-danger" th:errors="*{doctorId}"
+                                              th:if="${#fields.hasErrors('doctorId')}"></span>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script>
+    const amount = document.getElementById('priceInput');
+
+    function input(e) {
+        let value = e.target.value;
+        value = value.replace(/\D/g, '');
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        e.target.value = value;
+    }
+
+    amount.addEventListener('keyup', input);
+    input();
+</script>
+<script th:src="@{https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js}"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/i/upload'
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<script
+        src="assets/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="assets/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="assets/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="assets/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="assets/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="assets/js/moment.min.js"
+        th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script
+        src="assets/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+<script
+        src="assets/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+
+
+<!-- add-doctor24:06-->
+</html>

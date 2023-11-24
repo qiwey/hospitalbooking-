@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+    <!--    <link rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}" type="text/css">-->
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/select2.min.css}" type="text/css">
+    <!--    <link rel="stylesheet" th:href="@{/assets/dashboard/css/style.css}" type="text/css">-->
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/aos.css}" type="text/css">
+</head>
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<div class="main-wrapper">
+    <div class="p-5">
+        <div class="content m-5">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Danh sách hồ sơ bệnh nhân</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-border table-striped custom-table datatable mb-0">
+                            <thead>
+                            <tr>
+                                <th>Tên</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                                <th>CCCD</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="patient : ${patients}">
+                                <td>
+                                    <a th:href="@{benh-nhan/{id}(id=${patient.id})}"
+                                       th:text="${patient.fullName}"></a>
+                                </td>
+                                <td th:text="${patient.gender.value}"></td>
+                                <td th:text="${#temporals.format(patient.dateOfBirth, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${patient.nationalIdCard}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+</html>

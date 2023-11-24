@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- add-doctor24:06-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../static/assets/dashboard/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="../../../static/assets/dashboard/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap-datetimepicker.min.css}"
+          type="text/css">
+    <link href="../../../static/assets/dashboard/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="col-lg-8 offset-lg-2">
+                <h4 class="page-title">Thêm hồ sơ bệnh án</h4>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form enctype="multipart/form-data" method="post"
+                          th:action="@{/dashboard/add-medical-record}" th:object="${newMedicalRecordDTO}">
+                        <input th:field="*{patientId}" type="hidden"/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Bác sĩ chịu trách nhiệm: </label>
+                                    <select class="form-control floating" name="doctorId" th:field="*{doctorId}"
+                                            type="text">
+                                        <option th:each="doctor : ${doctors}" th:text="${doctor.getFullName()}"
+                                                th:value="${doctor.getUserId()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Chuẩn đoán sơ bộ: </label>
+                                    <input class="form-control floating" name="diagnosis" th:field="*{diagnosis}"
+                                           type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Liệu pháp điều trị </label>
+                                    <input class="form-control floating" name="treatment" th:field="*{treatment}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Đơn thuốc (*) </label>
+                                    <input class="form-control floating" name="prescription" th:field="*{prescription}"
+                                           type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="focus-label">Kết quả khám xét nghiệm </label>
+                                    <input class="form-control floating" id="fileInput" multiple="multiple" name="file"
+                                           th:field="*{documentPath}"
+                                           type="file">
+                                    <div id="selectedFiles"></div>
+                                </div>
+                            </div>
+                            <!--                            <div class="col-md-6">-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label class="focus-label">Ngày khám</label>-->
+                            <!--                                    <input class="form-control floating datetimepicker"-->
+                            <!--                                           th:field="*{recordDate}"-->
+                            <!--                                           type="text">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn">Thêm bệnh án</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script type="text/javascript">
+    // Lắng nghe sự kiện thay đổi của trường input type="file"
+    const fileInput = document.getElementById('fileInput');
+    const selectedFiles = document.getElementById('selectedFiles');
+
+    fileInput.addEventListener('change', function () {
+        selectedFiles.innerHTML = ''; // Xóa danh sách tên tệp cũ
+
+        if (fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                const fileName = fileInput.files[i].name;
+                const fileNameElement = document.createElement('p');
+                fileNameElement.textContent = fileName;
+                selectedFiles.appendChild(fileNameElement);
+            }
+        } else {
+            // Nếu không có tệp nào được chọn, hiển thị thông báo
+            const noFilesElement = document.createElement('p');
+            noFilesElement.textContent = "Không có tệp nào được chọn";
+            selectedFiles.appendChild(noFilesElement);
+        }
+    });
+
+</script>
+<script
+        src="../../../static/assets/dashboard/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/moment.min.js"
+        th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+<script
+        src="../../../static/assets/dashboard/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+
+
+<!-- add-doctor24:06-->
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tệp đã tải lên</title>
+</head>
+<body>
+
+<ul>
+    <li th:each="file : ${uploadedFiles}">
+        <a th:href="@{'/uploads/' + ${file}}" th:text="${file}"></a>
+    </li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- appointments23:19-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/select2.min.css}" type="text/css">
+    <link media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css}" type="text/css">
+    <link media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/style.css}" type="text/css">
+    <link media="all" rel="stylesheet" th:src="@{/assets/dashboard/vendor/datepicker/daterangepicker.css}"
+          type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+          rel="stylesheet">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Danh sách lịch đặt khám</h4>
+                </div>
+                <!-- <div class="col-sm-8 col-9 text-right m-b-20">
+                    <a class="btn btn btn-primary btn-rounded float-right" href="add-appointment.html"><i
+                            class="fa fa-plus"></i> Thêm lịch khám</a>
+                </div> -->
+            </div>
+            <form method="get" th:action="@{/dashboard/appointments}">
+                <div class="row filter-row">
+                    <div class="col-sm-1 col-md-1">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Số lượng</label>
+                            <select class="select floating" name="size" onchange="submitForm()" th:field="${page.size}">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Tìm kiếm</label>
+                            <input class="form-control floating" name="search" th:value="${param.search}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus ">
+                            <label class="focus-label">Từ ngày</label>
+                            <input class="form-control floating input--style-1 datetimepicker" id="start"
+                                   name="start"
+                                   th:value="${param.start != null ? param.start : #temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group form-focus ">
+                            <label class="focus-label">Đến ngày</label>
+                            <input class="form-control floating input--style-1 datetimepicker " id="end"
+                                   name="end"
+                                   th:value="${param.end != null ? param.end : #temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-success btn-block">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <a class="btn btn-success btn-block"
+                           th:href="@{/dashboard/appointments}">Reset</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th>Tên bệnh nhân</th>
+                                <th>Tuổi</th>
+                                <th>Số điện thoại</th>
+                                <th>Dịch vụ</th>
+                                <th>Bác sĩ</th>
+                                <th>Chuyên khoa</th>
+                                <th>Lí do khám</th>
+                                <th>Ngày khám</th>
+                                <th>Thời gian</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Thanh toán</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="appointment : ${page.content}">
+                                <td><a th:href="@{/dashboard/patient-detail/{id}(id=${appointment.patientId})}"
+                                       th:text="${appointment.patientName}"></a></td>
+                                <td th:text="${appointment.patientAge}">20</td>
+                                <td th:text="${appointment.contactNumber}">0123456789</td>
+                                <td th:text="${appointment.serviceName}">Khám tổng quát</td>
+                                <td th:text="${appointment.doctorName}">Nguyễn Văn B</td>
+                                <td th:text="${appointment.reason}">Nguyễn Văn B</td>
+                                <td th:text="${appointment.departmentName}">Nội khoa</td>
+                                <td th:text="${#temporals.format(appointment.time, 'dd-MM-yy')}">20/10/2020
+                                </td>
+                                <td th:text="${#temporals.format(appointment.time, 'HH:mm')}">20/10/2020
+                                </td>
+                                <td class="text-center" style="cursor: pointer">
+                                    <div class="dropdown action-label">
+                                        <a aria-expanded="false"
+                                           class="custom-badge dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           th:classappend="${appointment.status.equals('PENDING') ? 'status-purple' : ''} "
+                                           th:text="${appointment.status.value}">
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right"
+                                             th:unless="${appointment.status.toString().equals('DONE') || appointment.status.toString().equals('REJECTED') }">
+                                            <a class="dropdown-item"
+                                               th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='CONFIRMED', start = ${param.start}, end = ${param.end})}"
+                                               th:if="${appointment.status.toString().equals('PENDING')}">Xác
+                                                nhận lịch khám</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='REJECTED', start = ${param.start}, end = ${param.end})}"
+                                               th:if="${appointment.status.toString().equals('PENDING')}">Hủy
+                                                lịch khám</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='DONE', start = ${param.start}, end = ${param.end})}"
+                                               th:if="${appointment.status.toString().equals('CONFIRMED')}">Đã
+                                                khám</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center"><a
+                                        th:href="@{/dashboard/invoice/{paymentId}(paymentId=${appointment.paymentId})}"
+                                        th:text="${appointment.paymentStatus.value}"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    <div style="padding-top: 0.85em">
+                        Trang số [[${page.number + 1}]] trên tổng số [[${page.totalPages}]] trang
+                        của [[${page.totalElements}]] kết quả
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 " th:if="${page.totalPages > 1}">
+                    <nav aria-label="navigation example">
+                        <ul class="pagination justify-content-end" style="margin: 2px 0">
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/staffs(search=${param.search}, roleId=${param.roleId}, departmentId=${param.departmentId}, size=${page.size}, page=0)}">&laquo;</a>
+                            </li>
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/staffs(search=${param.search}, roleId=${param.roleId}, departmentId=${param.departmentId}, size=${page.size}, page=${page.number - 1})}">&lsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/staffs(search=${param.search}, roleId=${param.roleId}, departmentId=${param.departmentId}, size=${page.size}, page=${page.number + 1})}">&rsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/staffs(search=${param.search}, roleId=${param.roleId}, departmentId=${param.departmentId}, size=${page.size}, page=${page.totalPages - 1})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script>
+    function submitForm() {
+        document.querySelector("form").submit();
+    }
+</script>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/vendor/datepicker/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/assets/dashboard/vendor/datepicker/daterangepicker.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<script>
+    $(function () {
+        $('#datetimepicker3').datetimepicker({
+            format: 'LT'
+        });
+        $('#datetimepicker4').datetimepicker({
+            format: 'LT'
+        });
+    });
+</script>
+</body>
+<!-- appointments23:20-->
+</html>

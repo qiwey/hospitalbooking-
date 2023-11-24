@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<!-- add-blog23:56-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="assets/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="assets/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="assets/css/tagsinput.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/tagsinput.css}"
+          type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Thêm bài viết</h4>
+                </div>
+            </div>
+            <form enctype="multipart/form-data" method="post" th:action="@{/dashboard/add-article}"
+                  th:object="${newArticleDTO}">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <form>
+                            <div class="form-group">
+                                <label for="title">Tiêu đề</label>
+                                <input class="form-control" id="title" th:field="*{title}" type="text">
+                                <span class="text-danger" th:errors="*{title}"
+                                      th:if="${#fields.hasErrors('title')}"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Ảnh hiển thị</label>
+                                <div>
+                                    <input class="form-control upload" th:field="*{thumbnailImage}" type="file">
+                                    <small class="form-text text-muted">Max. file size: 5 MB. Allowed images: jpg, gif,
+                                        png.</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-8 col-lg-6 col-xl-4">
+                                        <div class="product-thumbnail">
+                                            <img alt=""
+                                                 class="img-thumbnail img-fluid img-preview"
+                                                 th:src="@{/assets/dashboard/img/placeholder-thumb.jpg}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="categoryId">Chuyên mục</label>
+                                        <select class="select form-control" id="categoryId" th:field="*{categoryId}">
+                                            <option th:each="category : ${categories}"
+                                                    th:text="${category.name}" th:value="${category.id}"></option>
+                                        </select>
+                                        <span class="text-danger" th:errors="*{categoryId}"
+                                              th:if="${#fields.hasErrors('categoryId')}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Trạng thái</label>
+                                        <select class="select form-control" id="status" th:field="*{status}">
+                                            <option value="DRAFT">Bản thô</option>
+                                            <option value="PUBLISHED">Xuất bản</option>
+                                            <option value="HIDDEN">Ẩn</option>
+                                        </select>
+                                        <span class="text-danger" th:errors="*{status}"
+                                              th:if="${#fields.hasErrors('status')}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editor">Mô tả</label>
+                                <textarea class="form-control" cols="30"
+                                          rows="6" th:field="*{description}"></textarea>
+                                <span class="text-danger" th:errors="*{description}"
+                                      th:if="${#fields.hasErrors('description')}"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="editor">Nội dung</label>
+                                <textarea class="form-control" cols="30" id="editor"
+                                          rows="6" th:field="*{content}"></textarea>
+                                <span class="text-danger" th:errors="*{content}"
+                                      th:if="${#fields.hasErrors('content')}"></span>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button class="btn btn-primary submit-btn">Tạo mới</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js}"></script>
+<script>
+    let file = document.querySelector('.upload');
+    let img = document.querySelector('.img-preview');
+    file.addEventListener('change', function () {
+        const [file] = this.files;
+        if (file) {
+            img.src = URL.createObjectURL(file);
+        }
+    });
+
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/i/upload'
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<script
+        src="assets/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="assets/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="assets/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="assets/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="assets/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="assets/js/tagsinput.js"
+        th:src="@{/assets/dashboard/js/tagsinput.js}"></script>
+<script
+        src="assets/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+<!-- add-blog23:57-->
+</html>

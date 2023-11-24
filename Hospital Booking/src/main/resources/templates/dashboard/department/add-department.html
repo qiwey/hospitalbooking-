@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- add-department24:07-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="assets/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="assets/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Tạo phòng ban</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form method="post" th:action="@{/dashboard/add-department}" th:object="${newDepartmentDTO}">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Mã phòng ban</label>
+                                <input class="form-control" name="id" th:field="*{code}" type="text">
+                                <span style="color: red"
+                                      th:errors="*{code}"
+                                      th:if="${#fields.hasErrors('code')}"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Tên phòng ban</label>
+                                <input class="form-control" name="name" th:field="*{name}" type="text">
+                                <span style="color: red"
+                                      th:errors="*{name}"
+                                      th:if="${#fields.hasErrors('name')}"
+                                ></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả ngắn</label>
+                            <textarea class="form-control" cols="30" name="description"
+                                      rows="4"
+                                      th:field="*{shortDescription}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Mô tả đầy đủ</label>
+                            <textarea class="form-control" cols="30" name="description"
+                                      rows="4"
+                                      th:field="*{fullDescription}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="display-block">Trạng thái</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="product_active" name="activeStatus"
+                                       th:field="*{activeStatus}" type="radio"
+                                       value="true">
+                                <label class="form-check-label" for="product_active">
+                                    Hoạt động
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="product_inactive" name="activeStatus"
+                                       th:field="*{activeStatus}" type="radio"
+                                       value="false">
+                                <label class="form-check-label" for="product_inactive">
+                                    Không hoạt động
+                                </label>
+                            </div>
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn" type="submit">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script
+        src="assets/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="assets/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="assets/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="assets/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="assets/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="assets/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+
+
+<!-- add-department24:07-->
+</html>

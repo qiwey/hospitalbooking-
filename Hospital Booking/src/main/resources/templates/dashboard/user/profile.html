@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- profile22:59-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="shortcut icon"
+            th:href="@{/assets/dashboard/img/favicon.ico}"
+            type="image/x-icon"
+    />
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/select2.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/style.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/aos.css}"
+            type="text/css"
+    />
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-7 col-6">
+                    <h4 class="page-title">Thông tin cá nhân</h4>
+                </div>
+            </div>
+            <div class="card-box profile-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    <a href="#"><img alt=""
+                                                     class="avatar"
+                                                     th:src="@{/i/{filename}(filename=${currentUser.profilePicture})}"></a>
+                                </div>
+                            </div>
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="profile-info-left">
+                                            <h3 class="user-name m-t-0 mb-0"
+                                                th:text="${currentUser.fullName}"
+                                            >fullName</h3>
+                                            <small class="text-muted" th:text="${currentUser.username}"></small>
+                                            <div class="staff-id">ID Nhân viên: <span
+                                                    th:text="${currentUser.id}"></span>
+                                            </div>
+                                            <div class="staff-id">Vai trò: <span
+                                                    th:text="${currentUser.role.name}"></span>
+                                            </div>
+                                            <div class="staff-id" th:if="${currentUser.department != null}">Phòng ban:
+                                                <span
+                                                        th:text="${currentUser.department.name}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Số điện thoại: </span>
+                                                <span class="text">
+                                                    <a href="#" th:text="${currentUser.contactNumber}">phone</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Email: </span>
+                                                <span class="text">
+                                                    <a href="#" th:text="${currentUser.email}">email</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Ngày sinh: </span>
+                                                <span class="text" th:text="${currentUser.dateOfBirth}">dob</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Địa chỉ: </span>
+                                                <span class="text" th:text="${currentUser.address}">address</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Giới tính: </span>
+                                                <span class="text" th:text="${currentUser.gender.value}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-tabs" th:if="${currentUser.role.id.equals('DOC')}">
+                <ul class="nav nav-tabs nav-tabs-bottom">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#schedule">Lịch làm việc</a>
+                    </li>
+                    <!--                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#bottom-tab2">Profile</a></li>-->
+                    <!--                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#bottom-tab3">Messages</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="schedule">
+                        <form
+                                method="get"
+                                th:action="@{/dashboard/profile}"
+                        >
+                            <div class="row filter-row">
+                                <div class="col-sm-2 col-md-2">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="focus-label">Năm</label>
+                                        <select
+                                                class="select floating"
+                                                id="year-select"
+                                                name="year"
+                                                onchange="populateWeekOptions()"
+                                                th:with="currentYear = ${#calendars.year(#calendars.createNow())}"
+                                        >
+                                            <option
+                                                    th:selected="${#strings.equals(param.year, currentYear - 1)}"
+                                                    th:text="${currentYear - 1}"
+                                            ></option>
+                                            <option
+                                                    th:selected="${param.year == null || #strings.equals(param.year, currentYear)}"
+                                                    th:text="${currentYear}"
+                                            ></option>
+                                            <option
+                                                    th:selected="${#strings.equals(param.year, currentYear + 1)}"
+                                                    th:text="${currentYear + 1}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="focus-label">Tuần</label>
+                                        <select
+                                                class="select floating"
+                                                id="week-select"
+                                                name="week"
+                                                onchange="formSubmit()"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table
+                                            class="table table-striped custom-table mb-0"
+                                    >
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Thứ 2</th>
+                                            <th class="text-center">Thứ 3</th>
+                                            <th class="text-center">Thứ 4</th>
+                                            <th class="text-center">Thứ 5</th>
+                                            <th class="text-center">Thứ 6</th>
+                                            <th class="text-center">Thứ 7</th>
+                                            <th class="text-center">Chủ nhật</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                                <label class="btn btn-light btn-block"
+                                                       style="border-radius: 3px;"
+                                                >07:30 - 09:30
+                                                    <input autocomplete="off" class="time-radio d-none"
+                                                           disabled
+                                                           name="time"
+                                                           th:checked="${#strings.contains(times, i + ': 07:30 - 09:30')}"
+                                                           th:value="${i + ': 07:30 - 09:30'}"
+                                                           type="checkbox"/>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                                <label class="btn btn-light btn-block"
+                                                       style="border-radius: 3px;"
+                                                >09:30 - 12:00
+                                                    <input autocomplete="off" class="time-radio d-none"
+                                                           disabled
+                                                           name="time"
+                                                           th:checked="${#strings.contains(times, i + ': 09:30 - 12:00')}"
+                                                           th:value="${i + ': 09:30 - 12:00'}"
+                                                           type="checkbox"/>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                                <label class="btn btn-light btn-block"
+                                                       style="border-radius: 3px;"
+                                                >13:00 - 15:00
+                                                    <input autocomplete="off" class="time-radio d-none"
+                                                           disabled
+                                                           name="time"
+                                                           th:checked="${#strings.contains(times, i + ': 13:00 - 15:00')}"
+                                                           th:value="${i + ': 13:00 - 15:00'}"
+                                                           type="checkbox"/>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                                <label class="btn btn-light btn-block"
+                                                       style="border-radius: 3px;"
+                                                >15:00 - 17:30
+                                                    <input autocomplete="off" class="time-radio d-none"
+                                                           disabled
+                                                           name="time"
+                                                           th:checked="${#strings.contains(times, i + ': 15:00 - 17:30')}"
+                                                           th:value="${i + ': 15:00 - 17:30'}"
+                                                           type="checkbox"/>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    function load() {
+        document.querySelectorAll("label").forEach((label) => {
+            label.classList.remove("btn-success", "text-white");
+            label.classList.add("btn-light");
+        });
+
+        const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkedCheckboxes.forEach((checkedCheckbox) => {
+            checkedCheckbox.parentElement.classList.remove("btn-light");
+            checkedCheckbox.parentElement.classList.add("btn-success", "text-white");
+        });
+    }
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", load);
+    });
+
+    load();
+
+</script>
+<script>
+
+
+    function populateWeekOptions() {
+        const yearSelect = document.getElementById("year-select");
+        const weekSelect = document.getElementById("week-select");
+        const year = parseInt(yearSelect.value);
+
+        // Clear existing options
+        weekSelect.innerHTML = "";
+
+        // Function to get the date range of a week
+        function getWeekRange(weekNumber, year) {
+            const januaryFirst = new Date(year, 0, 1);
+            const daysToMonday =
+                1 - januaryFirst.getDay() < 0
+                    ? 8 - januaryFirst.getDay()
+                    : 1 - januaryFirst.getDay();
+            const firstMonday = new Date(
+                year,
+                0,
+                1 + daysToMonday + 7 * (weekNumber - 1)
+            );
+            const lastSunday = new Date(
+                year,
+                0,
+                1 + daysToMonday + 7 * weekNumber - 1
+            );
+            return {start: firstMonday, end: lastSunday};
+        }
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let dateParam = new Date(urlParams.get("week") || Date.now());
+        for (let weekNumber = 1; weekNumber <= 52; weekNumber++) {
+            const weekRange = getWeekRange(weekNumber, year);
+            const option = document.createElement("option");
+            const date = new Date(
+                weekRange.start.getTime() + 24 * 60 * 60 * 1000
+            );
+            option.value = date.toISOString().substring(0, 10);
+            option.selected = dateParam >= weekRange.start;
+            option.text =
+                weekRange.start.getDate() +
+                "/" +
+                (weekRange.start.getMonth() + 1) +
+                " đến " +
+                weekRange.end.getDate() +
+                "/" +
+                (weekRange.end.getMonth() + 1);
+            weekSelect.appendChild(option);
+        }
+
+        const week = document.querySelector('#week-form');
+        week.value = weekSelect.value;
+    }
+
+    // Event listener for year selection
+    const yearSelect = document.getElementById("year-select");
+
+    // Initial population of weeks
+    populateWeekOptions();
+
+    function formSubmit() {
+        document.querySelector("form").submit();
+    }
+
+</script>
+</body>
+
+
+<!-- profile23:03-->
+</html>

@@ -1,0 +1,59 @@
+<div class="sidebar" id="sidebar" th:fragment="sidebar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="sidebar-inner slimscroll">
+        <div class="sidebar-menu" id="sidebar-menu">
+            <ul>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                    <a th:href="@{/dashboard}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                    <a th:href="@{/dashboard/edit-homepage}"><i class="fa fa-home"></i> <span>Trang chủ</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_DOC', 'ROLE_ADMIN', 'ROLE_ASSIS', 'ROLE_RECEP', 'ROLE_NURSE')">
+                    <a th:href="@{/dashboard/patients}"><i class="fa fa-wheelchair"></i> <span>Bệnh nhân</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_DOC', 'ROLE_ADMIN', 'ROLE_ASSIS', 'ROLE_RECEP')">
+                    <a th:href="@{/dashboard/appointments}"><i
+                            class="fa fa-calendar"></i>
+                        <span>Lịch hẹn</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                    <a th:href="@{/dashboard/departments}"><i class="fa fa-hospital-o"></i> <span>Phòng ban</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_ASSIS')">
+                    <a th:href="@{/dashboard/staffs}"><i class="fa fa-user"></i> <span>Nhân viên</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                    <a th:href="@{/dashboard/services}"><i class="fa fa-star"></i> <span>Dịch vụ</span></a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_ASSIS')">
+                    <a th:href="@{/dashboard/feedbacks}"><i class="fa fa-envelope"></i> <span>Phản hồi</span></a>
+                </li>
+                <li class="submenu" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDIA')">
+                    <a href="articles"><i class="fa fa-commenting-o"></i> <span> Tin tức</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a
+                                th:href="@{/dashboard/categories}">Chuyên mục</a></li>
+                        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDIA')"><a
+                                th:href="@{/dashboard/articles}">Bài viêt</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const currentUrl = window.location.href;
+        const menuLinks = document.querySelectorAll("#sidebar-menu a");
+        console.log(currentUrl);
+        for (let i = 0; i < menuLinks.length; i++) {
+            const menuLink = menuLinks[i];
+            const linkHref = menuLink.getAttribute("href");
+            console.log("Link Href:", linkHref);
+            if (currentUrl.endsWith(linkHref)) {
+                console.log("Href:", linkHref);
+                menuLink.parentElement.classList.add("active");
+            }
+        }
+    </script>
+</div>

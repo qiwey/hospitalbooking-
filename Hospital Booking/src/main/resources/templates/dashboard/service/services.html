@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- departments23:21-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/select2.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/aos.css}" type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-5 col-5">
+                    <h4 class="page-title">Danh sách dịch vụ</h4>
+                </div>
+                <div class="col-sm-7 col-7 text-right m-b-30">
+                    <a class="btn btn-primary btn-rounded" th:href="@{/dashboard/add-service}"><i
+                            class="fa fa-plus"></i>
+                        Thêm dịch vụ</a>
+                </div>
+            </div>
+            <form method="get" th:action="@{/dashboard/services}">
+                <div class="row filter-row">
+                    <div class="col-sm-1 col-md-1">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Số lượng</label>
+                            <select class="select floating" name="size" onchange="submitForm()"
+                                    th:field="${page.size}">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Tìm kiếm</label>
+                            <input class="form-control floating" name="search" th:value="${param.search}"
+                                   type="text">
+                        </div>
+                    </div>
+                    <!--                    <div class="col-sm-2 col-md-2">-->
+                    <!--                        <div class="form-group form-focus select-focus">-->
+                    <!--                            <label class="focus-label">Chuyên khoa</label>-->
+                    <!--                            <select class="select floating" name="roleId">-->
+                    <!--                                <option value="">Chọn chuyên khoa</option>-->
+                    <!--                                <option th:each="role : ${roles}"-->
+                    <!--                                        th:selected="${#strings.equals(role.id, param.roleId)}"-->
+                    <!--                                        th:text="${role.name}"-->
+                    <!--                                        th:value="${role.id}">-->
+                    <!--                                </option>-->
+                    <!--                            </select>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class="col-sm-2 col-md-2">-->
+                    <!--                        <div class="form-group form-focus select-focus">-->
+                    <!--                            <label class="focus-label">Phòng ban</label>-->
+                    <!--                            <select class="select floating" name="departmentId">-->
+                    <!--                                <option value="">Chọn phòng ban</option>-->
+                    <!--                                <option th:each="department : ${departments}"-->
+                    <!--                                        th:selected="${#strings.equals(department.id, param.departmentId)}"-->
+                    <!--                                        th:text="${department.name}"-->
+                    <!--                                        th:value="${department.id}">-->
+                    <!--                                </option>-->
+                    <!--                            </select>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-success btn-block">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <a class="btn btn-success btn-block"
+                           th:href="@{/dashboard/departments}">Reset</a>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th>Tên dịch vụ</th>
+                                <th>Mô tả</th>
+                                <th>Loại</th>
+                                <th>Chất lượng</th>
+                                <th>Phòng ban</th>
+                                <th>Bác sĩ</th>
+                                <th>Giá (vnđ)</th>
+                                <th class="text-right">Tác vụ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="service : ${page.content}">
+                                <td th:text="${service.name}"></td>
+                                <td th:text="${service.description}"></td>
+                                <td th:text="${service.type.value}"></td>
+                                <td th:text="${service.quality.value}"></td>
+                                <td th:text="${service.departmentName}"></td>
+                                <td th:text="${service.doctorName}"></td>
+                                <td th:text="${#numbers.formatDecimal(service.price, 0, 'POINT', 0, 'COMMA')}"></td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a class="dropdown-item"
+                                           th:href="@{/dashboard/edit-service/{id}(id=${service.id})}">
+                                            <i class="fa fa-pencil m-r-5"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--                        <ul class="pagination pagination-sm no-margin pull-right">-->
+                        <!--                            <li><a th:href="@{'?pageNo='+${currentPage-1}}">«</a></li>-->
+                        <!--                            <li th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${currentPage==i ?'active':''}"><a th:href="@{${keyword!=null&&keyword!=''?'?keyword='+keyword+'&':'?'}+'pageNo='+${i}}" th:text="${i}" ></a></li>-->
+                        <!--                            <li><a th:href="@{'?pageNo='+${currentPage+1}}">»</a></li>-->
+                        <!--                        </ul>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${page.totalPages > 1}">
+                <div class="col-sm-12 col-md-5">
+                    <div style="padding-top: 0.85em">
+                        Trang số [[${page.number + 1}]] trên tổng số [[${page.totalPages}]] trang
+                        của [[${page.totalElements}]] kết quả
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 ">
+                    <nav aria-label="navigation example">
+                        <ul class="pagination justify-content-end" style="margin: 2px 0">
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/services(keyword= ${keyword}, size=${page.size}, page=0)}">&laquo;</a>
+                            </li>
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/services(keyword= ${keyword}, size=${page.size}, page=${page.number - 1})}">&lsaquo;</a>
+                            </li>
+                            <!--                            <li th:each="i: ${#numbers.sequence(1, page.totalPages)}"-->
+                            <!--                                th:class="${page.number + 1 == i} ? 'page-item active' : 'page-item'">-->
+                            <!--                                <a class="page-link" th:text="${i}"></a>-->
+                            <!--                            </li>-->
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/services(keyword= ${keyword}, size=${page.size}, page=${page.number + 1})}">&rsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/services(keyword= ${keyword}, size=${page.size}, page=${page.totalPages - 1})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script>
+    function submitForm() {
+        document.querySelector("form").submit();
+    }
+</script>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<!-- departments23:21-->
+</body>
+</html>

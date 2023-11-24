@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="shortcut icon"
+            th:href="@{/assets/dashboard/img/favicon.ico}"
+            type="image/x-icon"
+    />
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/select2.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/style.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/aos.css}"
+            type="text/css"
+    />
+    <!-- Main CSS-->
+    <link href="../../../static/assets/dashboard/css/main.css"
+          media="all"
+          rel="stylesheet"
+          th:src="@{/assets/dashboard/css/main.css}" type="text/css">
+    <style>
+        #editModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .modal-content {
+            margin-top: 50%;
+            width: 146%;
+        }
+
+        .form-control {
+            width: 172%;
+        }
+
+        .btn-primary-1 {
+            border-color: transparent;
+            background-color: #50c878;
+            color: white;
+            margin-left: 300px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-7 col-6">
+                    <h4 class="page-title">Thông tin cá nhân</h4>
+                </div>
+            </div>
+            <div class="card-box profile-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    <a href="#"><img
+                                            alt=""
+                                            class="avatar"
+                                            src="https://th.bing.com/th/id/R.3facbb5eefdada8df4a84ccb4815ed73?rik=IWiNlu9%2flgAnmg&pid=ImgRaw&r=0"></a>
+                                </div>
+                            </div>
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-md-5" style="border-right:2px dashed grey; padding-left: 70px">
+                                        <div>
+                                            <h3 class="user-name m-t-0 mb-0"
+                                                th:text="${patient.fullName}">fullName</h3>
+                                            <small class="text-muted" id="age" th:data="${patient.dateOfBirth}"></small>
+                                            <div class="patient-id">ID Bệnh Nhân: <span
+                                                    th:text="${patient.getId()}"></span>
+                                            </div>
+
+                                            <div class="patient-create">Ngày đăng kí: <span
+                                                    th:text="${#temporals.format(patient.createdAt, 'dd-MM-yyyy')}"></span>
+                                            </div>
+                                            <div class="staff-msg">
+                                                <form method="post"
+                                                      th:action="@{/dashboard/sendInvoice/{patientId}/{paymentId}(patientId=${patient.id}, paymentId=${paymentId})}">
+                                                    <input name="paymentId" th:value="${paymentId}" type="hidden"/>
+                                                    <button class="btn btn-primary" type="submit">Send Message</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Số điện thoại: </span>
+                                                <span class="text">
+                                                    <a href="#" th:text="${patient.contactNumber}">phone</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Email: </span>
+                                                <span class="text">
+                                                    <a href="#" th:text="${patient.email}">email</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Ngày sinh: </span>
+                                                <span class="text"
+                                                      th:text="${#temporals.format(patient.dateOfBirth, 'dd-MM-yyyy')}">dob</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Địa chỉ: </span>
+                                                <span class="text" th:text="${patient.address}">address</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Giới tính: </span>
+                                                <span class="text" th:text="${patient.gender.value}"></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">CCCD/CMND: </span>
+                                                <span class="text" th:text="${patient.nationalIdCard}"></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Nơi cấp BHYT: </span>
+                                                <span class="text" th:text="${patient.insuranceProvider.value}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-tabs">
+                <ul class="nav nav-tabs nav-tabs-bottom">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#medical-record">Hồ sơ bệnh
+                        án</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#appointment-record">Lịch sử
+                        khám</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="medical-record">
+                        <a class="btn btn btn-primary btn-rounded"
+                           style="margin: 0 0 20px 20px;"
+                           th:href="@{/dashboard/add-medical-record/{patientId}(patientId=${patient.getId()})}"
+                        >
+                            <i class="fa fa-plus"></i> Thêm hồ sơ khám
+                        </a>
+                        <div th:each="medicalRecord, i: ${medical_record}">
+                            <div id="accordion">
+                                <div class="card">
+                                    <div class="card-header" th:id="${'heading' + i.index}">
+                                        <h5 class="mb-0">
+                                            <button aria-expanded="true" class="btn"
+                                                    data-toggle="collapse"
+                                                    th:aria-controls="${'collapse' + i.index}"
+                                                    th:data-target="${'#collapse' + i.index}">
+                                                <span style="display: block">
+                                                <span style="padding-right: 0"><i class="far fa-calendar"></i> Bệnh án ngày: </span>
+                                                    <span class="datepicker"
+                                                          th:text="${#temporals.format(medicalRecord.createdAt, 'dd-MM-yyyy')}">
+                                                    </span>
+                                                </span>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div class="collapse hide" data-parent="#accordion"
+                                         th:aria-labelledby="${'heading' + i.index}"
+                                         th:id="${'collapse' + i.index}">
+                                        <div class="card-body" style="border-top: 1px solid rgba(0,0,0,.2)">
+                                            <div class="" th:id="'medical-record-details-'+ ${medicalRecord.getId()}">
+                                                <div class="experience-box col-md-6">
+                                                    <div class="edit-icon" onclick="eventEdit(this)"
+                                                         style="cursor: pointer; margin: 20px 0">
+                                                        <i class="fa fa-edit" id="editButton"
+                                                           title="Chỉnh sửa hồ sơ">
+                                                        </i>
+                                                        Chỉnh sửa hồ sơ
+                                                    </div>
+                                                    <div id="editModal" style="display: none">
+
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Chỉnh sửa hồ sơ bệnh án</h4>
+                                                                    <button aria-hidden="true" class="close"
+                                                                            data-dismiss="modal"
+                                                                            id="close-tab-btn"
+                                                                            onclick="eventClosePopup(this)"
+                                                                            type="button">
+                                                                        &times;
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body col-md-12">
+                                                                    <form enctype="multipart/form-data" id="editForm">
+                                                                        <!-- Các trường chỉnh sửa thông tin hồ sơ bệnh án -->
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="gen-label">Chuẩn đoán
+                                                                                        <span
+                                                                                                class="text-danger">*</span></label>
+                                                                                    <div class="form-check-inline">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-control"
+                                                                                                   name="diagnosis"
+                                                                                                   th:value="${medicalRecord.diagnosis}"
+                                                                                                   type="text">
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="gen-label">Liệu pháp
+                                                                                        <span
+                                                                                                class="text-danger">*</span></label>
+                                                                                    <div class="form-check-inline">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-control"
+                                                                                                   name="treatment"
+                                                                                                   th:value="${medicalRecord.treatment}"
+                                                                                                   type="text">
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="gen-label">Kê đơn
+                                                                                        <span
+                                                                                                class="text-danger">*</span></label>
+                                                                                    <div class="form-check-inline">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-control"
+                                                                                                   name="prescription"
+                                                                                                   th:value="${medicalRecord.prescription}"
+                                                                                                   type="text">
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="gen-label">File đính
+                                                                                        kèm
+                                                                                        <span
+                                                                                                class="text-danger">*</span></label>
+                                                                                    <input accept=".pdf, .docx"
+                                                                                           name="file"
+                                                                                           type="file">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <button class="btn btn-primary-1"
+                                                                                id="saveButton"
+                                                                                type="button">Cập nhập
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <ul class="experience-list">
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Bác sĩ chịu trách
+                                                                            nhiệm</a>
+                                                                        <div class="text"
+                                                                             th:text="${medicalRecord.getDoctor().fullName}"></div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Ngày thăm khám</a>
+                                                                        <div class="text"
+                                                                             th:text="${#temporals.format(medicalRecord.createdAt, 'dd-MM-yyyy')}"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Chuẩn đoán</a>
+                                                                        <div class="text"
+                                                                             th:text="${medicalRecord.diagnosis}"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Liệu pháp</a>
+                                                                        <div class="text"
+                                                                             th:text="${medicalRecord.treatment}"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Kê đơn</a>
+                                                                        <div class="text"
+                                                                             th:text="${medicalRecord.prescription}"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="experience-user">
+                                                                    <div class="before-circle"></div>
+                                                                </div>
+                                                                <div class="experience-content">
+                                                                    <div class="timeline-content">
+                                                                        <a class="name" href="#/">Kết quả đính kèm</a>
+                                                                        <i class="bi bi-filetype-pdf"></i>
+                                                                        <div th:each="entry : ${medicalRecordFilesMap}">
+                                                                            <div class="medical-record">
+                                                                                <div th:if="${entry.key == medicalRecord}">
+                                                                                    <div th:each="file : ${entry.value}">
+                                                                                        <a target="_blank"
+                                                                                           th:href="@{'/view/' + ${file}}"
+                                                                                           th:text="${file}">
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="appointment-record">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped custom-table mb-0 datatable">
+                                        <thead>
+                                        <tr>
+                                            <th>Dịch vụ</th>
+                                            <th>Bác sĩ</th>
+                                            <th>Chuyên khoa</th>
+                                            <th>Lí do khám</th>
+                                            <th>Ngày khám</th>
+                                            <th>Thời gian</th>
+                                            <th class="text-center">Trạng thái</th>
+                                            <th class="text-center">Thanh toán</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="appointment : ${appointments}">
+                                            <td style="width: 20%" th:text="${appointment.serviceName}">Khám tổng quát
+                                            </td>
+                                            <td th:text="${appointment.doctorName}">Nguyễn Văn B</td>
+                                            <td th:text="${appointment.reason}">Nguyễn Văn B</td>
+                                            <td th:text="${appointment.departmentName}">Nội khoa</td>
+                                            <td th:text="${#temporals.format(appointment.time, 'dd-MM-yy')}">20/10/2020
+                                            </td>
+                                            <td th:text="${#temporals.format(appointment.time, 'HH:mm')}">20/10/2020
+                                            </td>
+                                            <td class="text-center" style="cursor: pointer">
+                                                <div class="dropdown action-label">
+                                                    <a aria-expanded="false"
+                                                       class="custom-badge dropdown-toggle"
+                                                       data-toggle="dropdown"
+                                                       th:classappend="${appointment.status.equals('PENDING') ? 'status-purple' : ''} "
+                                                       th:text="${appointment.status.value}">
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                         th:unless="${appointment.status.toString().equals('DONE') || appointment.status.toString().equals('REJECTED') }">
+                                                        <a class="dropdown-item"
+                                                           th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='CONFIRMED', start = ${param.start}, end = ${param.end})}"
+                                                           th:if="${appointment.status.toString().equals('PENDING')}">Xác
+                                                            nhận lịch khám</a>
+                                                        <a class="dropdown-item"
+                                                           th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='REJECTED', start = ${param.start}, end = ${param.end})}"
+                                                           th:if="${appointment.status.toString().equals('PENDING')}">Hủy
+                                                            lịch khám</a>
+                                                        <a class="dropdown-item"
+                                                           th:href="@{/dashboard/appointment/change-status(id=${appointment.id}, status='DONE', start = ${param.start}, end = ${param.end})}"
+                                                           th:if="${appointment.status.toString().equals('CONFIRMED')}">Đã
+                                                            khám</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center"><a
+                                                    th:href="@{/dashboard/invoice/{paymentId}(paymentId=${appointment.paymentId})}"
+                                                    th:text="${appointment.paymentStatus.value}"></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script>
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const editIcons = document.querySelectorAll(".edit-icon");
+    //
+    //     editIcons.forEach(function (icon) {
+    //         icon.addEventListener("click", function () {
+    //             const medicalRecordId = icon.getAttribute("th:data-medical-record-id");
+    //             // Lấy thông tin hồ sơ bệnh án từ cơ sở dữ liệu dựa trên medicalRecordId
+    //             // Hiển thị thông tin này trong cửa sổ popup
+    //             const editModal = document.getElementById("editModal");
+    //             editModal.style.display = "block"; // Hiển thị cửa sổ popup
+    //
+    //             // Gắn sự kiện cho nút "Lưu"
+    //             const saveButton = document.getElementById("saveButton");
+    //             saveButton.addEventListener("click", function () {
+    //                 // Lấy thông tin chỉnh sửa từ các trường trong cửa sổ popup
+    //                 const treatment = document.getElementById("treatment").value;
+    //                 const diagnosis = document.getElementById("diagnosis").value;
+    //                 const prescription = document.getElementById("prescription").value;
+    //                 // Gửi thông tin chỉnh sửa đến máy chủ để cập nhật cơ sở dữ liệu
+    //                 fetch(`/api/medical-records/${medicalRecordId}`, {
+    //                     method: 'PUT',
+    //                     headers: {
+    //                         'Content-Type': 'application/json',
+    //                     },
+    //                     body: JSON.stringify({
+    //                         treatment: treatment,
+    //                         diagnosis: diagnosis,
+    //                         prescription: prescription,
+    //                     }),
+    //                 })
+    //                     .then((response) => {
+    //                         if (response.status === 200) {
+    //                             // Cập nhật thành công, đóng cửa sổ popup
+    //                             editModal.style.display = "none";
+    //                         } else {
+    //                             // Xử lý lỗi
+    //                         }
+    //                     });
+    //             });
+    //         });
+    //     });
+    // });
+
+    function eventClosePopup(event) {
+        console.log("Event: " + event.id);
+        var editModal = document.getElementById("editModal");
+        console.log("Style of edit Modal: " + editModal.style.display);
+
+        if (editModal.style.display === '' || editModal.style.display === 'none') {
+
+            editModal.style.display = "block";
+        } else {
+            editModal.style.display = "none";
+        }
+    }
+
+    function eventEdit(event) {
+        console.log("Event: " + event.id);
+        var editModal = document.getElementById("editModal");
+        console.log("Style of edit Modal: " + editModal.style.display);
+
+        if (editModal.style.display === '' || editModal.style.display === 'none') {
+
+            editModal.style.display = "block";
+        } else {
+            editModal.style.display = "none";
+        }
+    }
+</script>
+
+
+<script>
+    let dob = document.getElementById("age");
+    console.log(dob);
+    let year = dob.getAttribute("data");
+    console.log(year);
+    let parts = year.split("-");
+    let birthYear = parseInt(parts[0]);
+    console.log(birthYear);
+    let currentYear = new Date().getFullYear();
+    let age = currentYear - birthYear;
+    document.getElementById("age").textContent = age + " tuổi";
+</script>
+
+<script>
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     console.log("Page loaded");
+    //     const showMedicalRecordButtons = document.querySelectorAll(".show-medical-record");
+    //
+    //     showMedicalRecordButtons.forEach(function (button) {
+    //         button.addEventListener("click", function (event) {
+    //             event.preventDefault();
+    //             const medicalRecordId = button.getAttribute("data-medical-record-id");
+    //             console.log(medicalRecordId);
+    //             const medicalRecordDetails = document.getElementById(`medical-record-details-${medicalRecordId}`);
+    //             console.log(medicalRecordDetails);
+    //             if (medicalRecordDetails.classList.contains("d-none")) {
+    //                 medicalRecordDetails.classList.remove("d-none");
+    //             } else {
+    //                 medicalRecordDetails.classList.add("d-none");
+    //             }
+    //         });
+    //     });
+    // });
+</script>
+
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+
+</body>
+</html>

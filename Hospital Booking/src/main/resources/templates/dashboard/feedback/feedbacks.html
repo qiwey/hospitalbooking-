@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- departments23:21-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" th:href="@{/assets/dashboard/img/favicon.ico}" type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/dataTables.bootstrap4.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/select2.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/dashboard/css/aos.css}" type="text/css">
+</head>
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-5 col-5">
+                    <h4 class="page-title">Danh sách phản hồi</h4>
+                </div>
+            </div>
+            <form method="get" th:action="@{/dashboard/feedbacks}">
+                <div class="row filter-row">
+                    <div class="col-sm-1 col-md-1">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Số lượng</label>
+                            <select class="select floating" name="size" onchange="submitForm()" th:field="${page.size}">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">Tìm kiếm</label>
+                            <input class="form-control floating" name="search" th:value="${param.search}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <label class="focus-label">Dịch vụ</label>
+                            <select class="select floating" name="serviceId">
+                                <option value="">Chọn dịch vụ</option>
+                                <option th:each="service : ${services}"
+                                        th:selected="${#strings.equals(service.id, param.serviceId)}"
+                                        th:text="${service.name + ' - ' + service.departmentName + ' - ' + service.doctorName }"
+                                        th:value="${service.id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-success btn-block">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <a class="btn btn-success btn-block"
+                           th:href="@{/dashboard/staffs}">Reset</a>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th>Bệnh nhân</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Dịch vụ</th>
+                                <th>Ngày khám</th>
+                                <th>Bác sĩ</th>
+                                <th>Phòng ban</th>
+                                <th>Phản hồi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="feedback : ${page.content}">
+                                <td th:text="${feedback.appointment.patient.fullName}"></td>
+                                <td th:text="${feedback.appointment.patient.contactNumber}"></td>
+                                <td th:text="${feedback.appointment.patient.email}"></td>
+                                <td th:text="${feedback.appointment.service.name}"></td>
+                                <td th:text="${#temporals.format(feedback.appointment.time, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td th:text="${feedback.appointment.service.doctor.fullName}"></td>
+                                <td th:text="${feedback.appointment.service.doctor.department.name}"></td>
+                                <td style="max-width: 400px" th:text="${feedback.comment}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    <div style="padding-top: 0.85em">
+                        Trang số [[${page.number + 1}]] trên tổng số [[${page.totalPages}]] trang
+                        của [[${page.totalElements}]] kết quả
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 " th:if="${page.totalPages > 1}">
+                    <nav aria-label="navigation example">
+                        <ul class="pagination justify-content-end" style="margin: 2px 0">
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/feedbacks(search=${param.search}, size=${page.size}, page=0)}">&laquo;</a>
+                            </li>
+                            <li th:class="${page.first ? 'disabled page-item ' : 'page-item '}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/feedbacks(search=${param.search}, size=${page.size}, page=${page.number - 1})}">&lsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/feedbacks(search=${param.search}, size=${page.size}, page=${page.number + 1})}">&rsaquo;</a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled page-item' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{/dashboard/feedbacks(search=${param.search}, size=${page.size}, page=${page.totalPages - 1})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script>
+    function submitForm() {
+        document.querySelector("form").submit();
+    }
+</script>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+<!-- departments23:21-->
+</html>

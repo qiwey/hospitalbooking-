@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="ie=edge" http-equiv="x-ua-compatible"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <style>
+        /**
+          * Avoid browser level font resizing.
+          * 1. Windows Mobile
+          * 2. iOS / OSX
+          */
+        body,
+        table,
+        td,
+        a {
+            /*-ms-text-size-adjust: 100%;*/
+            /*!* 1 *!*/
+            /*-webkit-text-size-adjust: 100%;*/
+            /*!* 2 *!*/
+        }
+
+        /*td.form {*/
+        /*    display: flex;*/
+        /*    flex-direction: column;*/
+        /*    justify-content: center;*/
+        /*    align-items: center*/
+        /*}*/
+
+        /**
+          * Remove extra space added to tables and cells in Outlook.
+          */
+        /* table,
+        td {
+          mso-table-rspace: 0pt;
+          mso-table-lspace: 0pt;
+        } */
+
+        /**
+          * Better fluid images in Internet Explorer.
+          */
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /**
+          * Remove blue links for iOS devices.
+          */
+        a[x-apple-data-detectors] {
+            font-family: inherit !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        /**
+          * Fix centering issues in Android 4.4.
+          */
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
+        }
+
+        body {
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /**
+          * Collapse table borders to avoid space between cells.
+          */
+        table {
+            border-collapse: collapse !important;
+        }
+
+        a {
+            color: #1a82e2;
+        }
+
+        img {
+            height: auto;
+            line-height: 100%;
+            text-decoration: none;
+            border: 0;
+            outline: none;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+
+
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body style="background-color: #e9ecef">
+<!-- start body -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <!-- start logo -->
+    <tr>
+        <td align="center" bgcolor="#e9ecef">
+            <table
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="max-width: 600px"
+                    width="100%"
+            >
+                <tr>
+                    <td align="center" style="padding: 36px 24px" valign="top">
+                        <h1>Đánh giá dịch vụ</h1>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <!-- start copy block -->
+    <tr>
+        <td align="center" bgcolor="#e9ecef">
+            <table
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="max-width: 600px"
+                    width="100%"
+            >
+                <!-- start copy -->
+                <form action="http://localhost:8080/send-feedback" enctype="multipart/form-data" method="get">
+                    <tr class="form"
+                        style="padding: 
+                            24px; font-size: 16px; 
+                            line-height: 24px">
+                        <p style="margin: 20px 0 ">Cám ơn bạn đã sử dụng dịch vụ. Hãy để lại đánh giá: </p>
+                    </tr>
+                    <tr>
+                        <div class="form-group" style="width: 90%; max-width: 500px; margin: 20px 0 ">
+                            <input name="appointmentId" th:value="${appointmentId}" type="hidden">
+                            <textarea class="form-control"
+                                      name="content"
+                                      rows="5"
+                            ></textarea>
+                        </div>
+                    </tr>
+                    <tr>
+                        <input class="btn btn-primary" type="submit" value="Gửi đáng giá">
+                    </tr>
+                </form>
+                <!-- end copy -->
+            </table>
+        </td>
+    </tr>
+    <!-- end copy block -->
+</table>
+<!-- end body -->
+</body>
+</html>

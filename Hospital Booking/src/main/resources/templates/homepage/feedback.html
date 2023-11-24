@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<!-- forgot-password24:03-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title th:text="${home.hospitalName}"></title>
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+</head>
+
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<div class="main-wrapper account-wrapper">
+    <div class="account-page">
+        <div class="account-center">
+            <h1 class="text-center">Đánh giá dịch vụ</h1>
+            <div class="account-box w-50">
+                <form class="form-signin" th:action="@{/danh-gia/{appointmentId}(appointmentId=${param.appointmentId})}"
+                      th:method="post"
+                      th:unless="${param.success}">
+                    <p class="text-center">Cám ơn bạn đã sử dụng dịch vụ. Hãy để lại đánh giá: </p>
+                    <div class="form-group">
+                        <textarea class="form-control"
+                                  name="comment"
+                                  required
+                                  rows="7"
+                        ></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary account-btn" type="submit">Gửi</button>
+                    </div>
+                </form>
+                <div class="alert alert-success" th:if="${param.success}">
+                    <p class="text-center">Cám ơn bạn đã đánh giá dịch vụ của chúng tôi!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/aos.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+<!-- forgot-password24:03-->
+</html>

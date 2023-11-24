@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${home.hospitalName}"></title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+</head>
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<!-- END nav -->
+<section class="ftco-section">
+    <div class="container">
+        <div class=" mb-3"
+             th:if="${param.category != null && !param.category.isEmpty() && currentCategory != null}">
+            <p class="breadcrumbs">
+                <span class="mr-2"><a th:href="@{/tin-tuc}">Tin tức  <i class="ion-ios-arrow-forward"></i></a></span>
+                <span class="mr-2" th:text="${currentCategory.name}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 ">
+                <div class="row">
+                    <div class="" th:classappend="${i.index == 0 ? 'col-md-12' :  'col-md-6'}"
+                         th:each="article, i : ${page.content}">
+                        <div class="blog-entry">
+                            <a class="block-20"
+                               th:href="@{/tin-tuc/{id}(id=${article.id})}"
+                               th:style="'background-image: url(\'/i/' + ${article.thumbnailUrl} + '\'); ' + ${i.index == 0 ? 'height: 400px' : ''}"
+                            >
+                                <div class="meta-date text-center p-2">
+                                    <span th:text="${article.categoryName}"></span>
+                                </div>
+                                <div class="meta-date float-right text-center p-2">
+                                    <span class="day" th:text="${article.createAt.dayOfMonth}"></span>
+                                    <span class="mos" th:text="${#temporals.monthNameShort(article.createAt)}"></span>
+                                    <span class="yr" th:text="${article.createAt.year}"></span>
+                                </div>
+                            </a>
+                            <div class="text bg-white p-4">
+                                <a th:href="@{/tin-tuc/{id}(id=${article.id})}">
+                                    <h3 class="heading"><strong style="text-transform:uppercase;"
+                                                                th:text="${article.title}"></strong><a
+                                            th:href="@{/tin-tuc/{id}(id=${article.id})}"></a></h3>
+                                </a>
+                                <p th:text="${article.description}"></p>
+                                <div class="d-flex align-items-center mt-4">
+                                    <p class="mb-0">
+                                        <a class="btn btn-primary" th:href="@{/tin-tuc/{id}(id=${article.id})}">Đọc thêm<span
+                                                class="ion-ios-arrow-round-forward"></span></a>
+                                    </p>
+                                    <p class="ml-auto mb-0">
+                                        <a class="mr-2" href="#" th:text="${article.authorName}">Admin</a>
+                                        <a><span class="icon-eye"></span> <span th:text="${article.viewCount}"></span>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters my-5" th:if="${page.content.isEmpty()}">
+                    <div class="col text-center">
+                        Không có kết quả
+                    </div>
+                </div>
+                <div class="row no-gutters my-5" th:if="${!page.content.isEmpty()}">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li th:if="${!page.first}"><a
+                                        th:href="@{/tin-tuc(page=${page.number - 1}, category=${param.category}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-back"></i></a></li>
+                                <!--                                <li th:classappend="${page.number + 1 == i  ?'active':''}"-->
+                                <!--                                    th:each="i:${#numbers.sequence(1,page.totalPages)}"><a-->
+                                <!--                                        th:href="@{/tin-tuc(page=${i - 1}, category=${param.category}, search=${param.search})}"-->
+                                <!--                                        th:text="${i}"><span></span></a></li>-->
+                                <li th:if="${!page.last}"><a
+                                        th:href="@{/tin-tuc(page=${page.number + 1}, category=${param.category}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-forward"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters my-5" th:if="${!page.content.isEmpty()}">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                <li th:if="${!page.first}"><a
+                                        th:href="@{/tin-tuc(page=${page.number - 1}, category=${param.category}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-back"></i></a></li>
+                                <li th:classappend="${page.number + 1 == i  ?'active':''}"
+                                    th:each="i : ${#numbers.sequence(
+                                        (page.totalPages > 4
+                                            ? (page.number > 3
+                                                ? (page.number > page.totalPages - 2
+                                                    ? page.totalPages - 3
+                                                        : page.number - 1)
+                                                : 1)
+                                            : 1 ),
+                                        (page.totalPages > 4
+                                            ? (page.number > page.totalPages - 3
+                                                ? page.totalPages
+                                                : (page.number > 2
+                                                    ? page.number + 3
+                                                    : 5))
+                                            : page.totalPages)
+                                      )}">
+                                    <a
+                                            th:href="@{/tin-tuc(page=${i - 1}, category=${param.category}, search=${param.search})}"
+                                            th:text="${i}">
+                                    </a>
+                                </li>
+                                <li th:if="${!page.last}"><a
+                                        th:href="@{/tin-tuc(page=${page.number + 1}, category=${param.category}, search=${param.search})}"><i
+                                        class="ion-ios-arrow-forward"></i></a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 sidebar ">
+                <div class="sidebar-box ">
+                    <form class="search-form p-0" th:action="@{/tin-tuc}">
+                        <input name="category" th:value="${param.category}" type="hidden">
+                        <div class="form-group">
+                            <span class="icon icon-search"></span>
+                            <input class="form-control" name="search" placeholder="Tìm kiếm bài viết"
+                                   th:value="${param.search}" type="text">
+                        </div>
+                    </form>
+                </div>
+                <div class="sidebar-box ">
+                    <h3>Chuyên mục</h3>
+                    <ul class="categories">
+                        <li><a th:href="@{/tin-tuc}">Tất cả </a></li>
+                        <li th:each="category : ${categories}"><a th:href="@{/tin-tuc(category=${category.id})}">[[${category.name}]]
+                            <span th:text="${category.numberOfArticles}"></span></a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-box ">
+                    <h3>Bài viết nổi bật</h3>
+                    <div class="block-21 mb-4 d-flex" th:each="article : ${popular}">
+                        <a class="blog-img mr-4"
+                           th:style="'background-image: url(\'/i/' + ${article.thumbnailUrl} + '\');'"></a>
+                        <div class="text">
+                            <h3 class="heading">
+                                <a style="text-transform:uppercase;" th:href="@{/tin-tuc/{id}(id=${article.id})}"
+                                   th:text="${article.title}">
+                                    Even the all-powerful Pointing has no control about the blind texts
+                                </a>
+                            </h3>
+                            <div class="meta">
+                                <div>
+                                    <a><span class="icon-calendar"></span>
+                                        <span th:text="${#temporals.format(article.createAt, 'dd/MM/yyyy')}"></span>
+                                    </a>
+                                </div>
+                                <div><a><span class="icon-eye"></span> <span th:text="${article.viewCount}">
+                                </span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+
+
+<!-- loader -->
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle class="path-bg" cx="24" cy="24" fill="none" r="22" stroke="#eeeeee" stroke-width="4"/>
+        <circle class="path" cx="24" cy="24" fill="none" r="22" stroke="#F96D00" stroke-miterlimit="10"
+                stroke-width="4"/>
+    </svg>
+</div>
+
+
+<script th:src="@{/assets/homepage/js/jquery.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/assets/homepage/js/popper.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.easing.1.3.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/assets/homepage/js/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/assets/homepage/js/aos.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.timepicker.min.js}"></script>
+<script th:src="@{/assets/homepage/js/scrollax.min.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script th:src="@{/assets/homepage/js/google-map.js}"></script>
+<script th:src="@{/assets/homepage/js/main.js}"></script>
+
+</body>
+</html>

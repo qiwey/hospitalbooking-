@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${home.hospitalName}"></title>
+    <meta charset="utf-8"/>
+    <meta
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            name="viewport"
+    />
+    <link rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <link
+            href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900"
+            rel="stylesheet"
+    />
+    <link href="/assets/homepage/css/open-iconic-bootstrap.min.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}"/>
+    <link href="/assets/homepage/css/animate.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/animate.css}"/>
+
+    <link href="/assets/homepage/css/owl.carousel.min.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/owl.carousel.min.css}"/>
+    <link href="/assets/homepage/css/owl.theme.default.min.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/owl.theme.default.min.css}"/>
+    <link href="/assets/homepage/css/magnific-popup.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/magnific-popup.css}"/>
+
+    <link href="/assets/homepage/css/aos.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/aos.css}"/>
+
+    <link href="/assets/homepage/css/ionicons.min.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/ionicons.min.css}"/>
+
+    <link href="/assets/homepage/css/bootstrap-datepicker.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/bootstrap-datepicker.css}"/>
+    <link href="/assets/homepage/css/jquery.timepicker.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/jquery.timepicker.css}"/>
+
+    <link href="/assets/homepage/css/flaticon.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/flaticon.css}"/>
+    <link href="/assets/homepage/css/icomoon.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/icomoon.css}"/>
+    <link href="/assets/homepage/css/style.css"
+          rel="stylesheet"
+          th:href="@{/assets/homepage/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<!-- END nav -->
+
+<section class="home-slider owl-carousel">
+    <a th:each="article : ${articles}" th:href="@{/tin-tuc/{id}(id=${article.id})}">
+        <div class="slider-item"
+             th:style="'background-image: url(/i/' + ${article.thumbnailUrl} + ');'"
+        >
+            <div class="overlay"></div>
+        </div>
+    </a>
+</section>
+
+<section class="ftco-section ftco-no-pt ftc-no-pb">
+    <div class="container">
+        <div class="row no-gutters">
+            <div
+                    class="col-md-5 p-md-5 img img-2 mt-5 mt-md-0 ftco-animate"
+                    th:style="'background-image: url(/i/' + ${home.aboutUsImg} + ')'">
+            </div>
+            <div class="col-md-7 wrap-about py-4 py-md-5 ftco-animate">
+                <div class="heading-section mb-5">
+                    <div class="pl-md-5 ml-md-5">
+                        <h2 class="mb-4" th:text="${home.aboutUsTitle}">
+                            Medical specialty concerned with the care of acutely ill
+                            hospitalized patients
+                        </h2>
+                    </div>
+                </div>
+                <div class="pl-md-5 ml-md-5 mb-5">
+                    <p class="text-justify" th:text="${home.aboutUsDesc}">
+                        On her way she met a copy. The copy warned the Little Blind
+                        Text, that where it came from it would have been rewritten a
+                        thousand times and everything that was left from its origin
+                        would be the word.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-2">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-4" th:text="${home.departmentTitle}">Clinic Departments</h2>
+                <p class="text-justify" style="text-align-last: center" th:text="${home.departmentDesc}">
+                    Separated they live in. A small river named Duden flows by their
+                    place and supplies it with the necessary regelialia. It is a
+                    paradisematic country
+                </p>
+            </div>
+        </div>
+        <div class="ftco-departments">
+            <div class="row">
+                <div class="col-md-12 nav-link-wrap">
+                    <div aria-orientation="vertical"
+                         class="nav nav-pills text-center"
+                         id="v-pills-tab"
+                         role="tablist"
+                         th:with="dpartTabNum=${#numbers.sequence(1, departments.size())}">
+                        <a class="nav-link ftco-animate"
+                           data-toggle="pill"
+                           role="tab"
+                           th:attr="aria-controls=|v-pills-${i}|, href=|#v-pills-${i}|, d=|v-pills-${i}-tab|"
+                           th:classappend="${i==1 ? 'active' : ''}"
+                           th:each="i : ${dpartTabNum}"
+                           th:text="${departments[__${i - 1}__].name}"
+                        >Department</a>
+                    </div>
+                </div>
+                <div class="col-md-12 tab-wrap">
+                    <div class="tab-content bg-light p-3 p-md-4 ftco-animate" id="v-pills-tabContent">
+                        <!-- Loop through departments and create a tab pane for each -->
+                        <div class="tab-pane py-2 fade"
+                             role="tabpanel"
+                             th:attr="aria-labelledby=|v-pills-${i}-tab|, id=|v-pills-${i}|"
+                             th:classappend="${i == 1} ? 'show active' : ''"
+                             th:each="i : ${#numbers.sequence(1, departments.size())}">
+                            <div class="row departments">
+                                <div class="col-lg-12 text-center ">
+                                    <!-- Department-specific content goes here -->
+                                    <p class="px-5 text-center" th:text="${departments[__${i - 1}__].description}">
+                                        On her way she met a copy. The copy warned the Little
+                                        Blind Text, that where it came from it would have been
+                                        rewritten a thousand times and everything that was left
+                                        from its origin would be the word.
+                                    </p>
+                                    <div class="button-custom order-lg-last mb-0 ">
+                                        <p class="btn btn-secondary py-2 px-3">
+                                            <a class="text-white"
+                                               th:href="@{dat-lich(department=${departments[__${i - 1}__].name})}">
+                                                Đặt lịch khám
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-no-pt">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-2">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-4" th:text="${home.doctorTitle}">Our Qualified Doctors</h2>
+                <p class="text-justify" style="text-align-last: center" th:text="${home.doctorDesc}">
+                    Separated they live in. A small river named Duden flows by their
+                    place and supplies it with the necessary regelialia. It is a
+                    paradisematic country
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-3 ftco-animate" th:each="doctor : ${doctors}">
+                <div class="staff">
+                    <div class="img-wrap d-flex align-items-stretch">
+                        <div
+                                class="img align-self-stretch"
+                                th:style="'background-image: url(/i/' + ${doctor.profilePicture} + ')'"
+                        ></div>
+                    </div>
+                    <div class="text pt-3 text-center">
+                        <h3 th:text="${'Bs. ' + doctor.fullName}">Dr. Lloyd Wilson</h3>
+                        <span class="position mb-2"
+                              th:text="${doctor.departmentName}">Neurologist</span>
+                        <div class="faded">
+                            <p class="text-justify"
+                               th:text="${doctor.description}"></p>
+                            <div class="button-custom ftco-social order-lg-last mb-0 ">
+                                <p class="btn btn-secondary py-2 px-3">
+                                    <a class="text-white" th:href="@{/dat-lich(doctorId=${doctor.userId})}">
+                                        Đặt lịch khám
+                                    </a>
+                                </p>
+                                <p th:if="${doctor.minPrice}"
+                                   th:text="${'Giá từ: ' + #numbers.formatDecimal( doctor.minPrice, 0, 'POINT', 0, 'COMMA') + ' vnđ'}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--<section class="ftco-section bg-light">-->
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-center mb-5 pb-2">-->
+<!--            <div class="col-md-8 text-center heading-section ftco-animate">-->
+<!--                <span class="subheading">Pricing</span>-->
+<!--                <h2 class="mb-4">Our Pricing</h2>-->
+<!--                <p>-->
+<!--                    Separated they live in. A small river named Duden flows by their-->
+<!--                    place and supplies it with the necessary regelialia. It is a-->
+<!--                    paradisematic country-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4 ftco-animate">-->
+<!--                <div class="pricing-entry pb-5 text-center">-->
+<!--                    <div>-->
+<!--                        <h3 class="mb-4">Basic</h3>-->
+<!--                        <p>-->
+<!--                            <span class="price">$24.50</span>-->
+<!--                            <span class="per">/ session</span>-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                    <ul>-->
+<!--                        <li>Diagnostic Services</li>-->
+<!--                        <li>Professional Consultation</li>-->
+<!--                        <li>Tooth Implants</li>-->
+<!--                        <li>Surgical Extractions</li>-->
+<!--                        <li>Teeth Whitening</li>-->
+<!--                    </ul>-->
+<!--                    <p class="button text-center">-->
+<!--                        <a class="btn btn-primary px-4 py-3" href="#">Get Offer</a>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4 ftco-animate">-->
+<!--                <div class="pricing-entry pb-5 text-center">-->
+<!--                    <div>-->
+<!--                        <h3 class="mb-4">Standard</h3>-->
+<!--                        <p>-->
+<!--                            <span class="price">$34.50</span>-->
+<!--                            <span class="per">/ session</span>-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                    <ul>-->
+<!--                        <li>Diagnostic Services</li>-->
+<!--                        <li>Professional Consultation</li>-->
+<!--                        <li>Tooth Implants</li>-->
+<!--                        <li>Surgical Extractions</li>-->
+<!--                        <li>Teeth Whitening</li>-->
+<!--                    </ul>-->
+<!--                    <p class="button text-center">-->
+<!--                        <a class="btn btn-primary px-4 py-3" href="#">Get Offer</a>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-4 ftco-animate">-->
+<!--                <div class="pricing-entry active pb-5 text-center">-->
+<!--                    <div>-->
+<!--                        <h3 class="mb-4">Premium</h3>-->
+<!--                        <p>-->
+<!--                            <span class="price">$54.50</span>-->
+<!--                            <span class="per">/ session</span>-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                    <ul>-->
+<!--                        <li>Diagnostic Services</li>-->
+<!--                        <li>Professional Consultation</li>-->
+<!--                        <li>Tooth Implants</li>-->
+<!--                        <li>Surgical Extractions</li>-->
+<!--                        <li>Teeth Whitening</li>-->
+<!--                    </ul>-->
+<!--                    <p class="button text-center">-->
+<!--                        <a class="btn btn-primary px-4 py-3" href="#">Get Offer</a>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="ftco-section testimony-section bg-light">-->
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-center mb-5 pb-2">-->
+<!--            <div class="col-md-8 text-center heading-section ftco-animate">-->
+<!--                <span class="subheading">Testimonials</span>-->
+<!--                <h2 class="mb-4">Our Patients Says About Us</h2>-->
+<!--                <p>-->
+<!--                    Separated they live in. A small river named Duden flows by their-->
+<!--                    place and supplies it with the necessary regelialia. It is a-->
+<!--                    paradisematic country-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row ftco-animate justify-content-center">-->
+<!--            <div class="col-md-8">-->
+<!--                <div class="carousel-testimony owl-carousel">-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap d-flex">-->
+<!--                            <div-->
+<!--                                    class="user-img mr-4"-->
+<!--                                    style="background-image: url(/assets/homepage/images/person_1.jpg)"-->
+<!--                            ></div>-->
+<!--                            <div class="text ml-2 bg-light">-->
+<!--                    <span-->
+<!--                            class="quote d-flex align-items-center justify-content-center"-->
+<!--                    >-->
+<!--                      <i class="icon-quote-left"></i>-->
+<!--                    </span>-->
+<!--                                <p>-->
+<!--                                    Far far away, behind the word mountains, far from the-->
+<!--                                    countries Vokalia and Consonantia, there live the blind-->
+<!--                                    texts.-->
+<!--                                </p>-->
+<!--                                <p class="name">Racky Henderson</p>-->
+<!--                                <span class="position">Farmer</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap d-flex">-->
+<!--                            <div-->
+<!--                                    class="user-img mr-4"-->
+<!--                                    style="background-image: url(/assets/homepage/images/person_2.jpg)"-->
+<!--                            ></div>-->
+<!--                            <div class="text ml-2 bg-light">-->
+<!--                    <span-->
+<!--                            class="quote d-flex align-items-center justify-content-center"-->
+<!--                    >-->
+<!--                      <i class="icon-quote-left"></i>-->
+<!--                    </span>-->
+<!--                                <p>-->
+<!--                                    Far far away, behind the word mountains, far from the-->
+<!--                                    countries Vokalia and Consonantia, there live the blind-->
+<!--                                    texts.-->
+<!--                                </p>-->
+<!--                                <p class="name">Henry Dee</p>-->
+<!--                                <span class="position">Businessman</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap d-flex">-->
+<!--                            <div-->
+<!--                                    class="user-img mr-4"-->
+<!--                                    style="background-image: url(/assets/homepage/images/person_3.jpg)"-->
+<!--                            ></div>-->
+<!--                            <div class="text ml-2 bg-light">-->
+<!--                    <span-->
+<!--                            class="quote d-flex align-items-center justify-content-center"-->
+<!--                    >-->
+<!--                      <i class="icon-quote-left"></i>-->
+<!--                    </span>-->
+<!--                                <p>-->
+<!--                                    Far far away, behind the word mountains, far from the-->
+<!--                                    countries Vokalia and Consonantia, there live the blind-->
+<!--                                    texts.-->
+<!--                                </p>-->
+<!--                                <p class="name">Mark Huff</p>-->
+<!--                                <span class="position">Students</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap d-flex">-->
+<!--                            <div-->
+<!--                                    class="user-img mr-4"-->
+<!--                                    style="background-image: url(/assets/homepage/images/person_4.jpg)"-->
+<!--                            ></div>-->
+<!--                            <div class="text ml-2 bg-light">-->
+<!--                    <span-->
+<!--                            class="quote d-flex align-items-center justify-content-center"-->
+<!--                    >-->
+<!--                      <i class="icon-quote-left"></i>-->
+<!--                    </span>-->
+<!--                                <p>-->
+<!--                                    Far far away, behind the word mountains, far from the-->
+<!--                                    countries Vokalia and Consonantia, there live the blind-->
+<!--                                    texts.-->
+<!--                                </p>-->
+<!--                                <p class="name">Rodel Golez</p>-->
+<!--                                <span class="position">Striper</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="item">-->
+<!--                        <div class="testimony-wrap d-flex">-->
+<!--                            <div-->
+<!--                                    class="user-img mr-4"-->
+<!--                                    style="background-image: url(/assets/homepage/images/person_1.jpg)"-->
+<!--                            ></div>-->
+<!--                            <div class="text ml-2 bg-light">-->
+<!--                    <span-->
+<!--                            class="quote d-flex align-items-center justify-content-center"-->
+<!--                    >-->
+<!--                      <i class="icon-quote-left"></i>-->
+<!--                    </span>-->
+<!--                                <p>-->
+<!--                                    Far far away, behind the word mountains, far from the-->
+<!--                                    countries Vokalia and Consonantia, there live the blind-->
+<!--                                    texts.-->
+<!--                                </p>-->
+<!--                                <p class="name">Ken Bosh</p>-->
+<!--                                <span class="position">Manager</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+
+<!-- loader -->
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script src="/assets/homepage/js/jquery.min.js" th:src="@{/assets/homepage/js/jquery.min.js}"></script>
+<script src="/assets/homepage/js/jquery-migrate-3.0.1.min.js"
+        th:src="@{/assets/homepage/js/jquery-migrate-3.0.1.min.js}"></script>
+<script src="/assets/homepage/js/popper.min.js" th:src="@{/assets/homepage/js/popper.min.js}"></script>
+<script src="/assets/homepage/js/bootstrap.min.js"
+        th:src="@{/assets/homepage/js/bootstrap.min.js}"></script>
+<script src="/assets/homepage/js/jquery.easing.1.3.js"
+        th:src="@{/assets/homepage/js/jquery.easing.1.3.js}"></script>
+<script src="/assets/homepage/js/jquery.waypoints.min.js"
+        th:src="@{/assets/homepage/js/jquery.waypoints.min.js}"></script>
+<script src="/assets/homepage/js/jquery.stellar.min.js"
+        th:src="@{/assets/homepage/js/jquery.stellar.min.js}"></script>
+<script src="/assets/homepage/js/owl.carousel.min.js"
+        th:src="@{/assets/homepage/js/owl.carousel.min.js}"></script>
+<script src="/assets/homepage/js/jquery.magnific-popup.min.js"
+        th:src="@{/assets/homepage/js/jquery.magnific-popup.min.js}"></script>
+<script src="/assets/homepage/js/aos.js" th:src="@{/assets/homepage/js/aos.js}"></script>
+<script src="/assets/homepage/js/jquery.animateNumber.min.js"
+        th:src="@{/assets/homepage/js/jquery.animateNumber.min.js}"></script>
+<script src="/assets/homepage/js/bootstrap-datepicker.js"
+        th:src="@{/assets/homepage/js/bootstrap-datepicker.js}"></script>
+<script src="/assets/homepage/js/jquery.timepicker.min.js"
+        th:src="@{/assets/homepage/js/jquery.timepicker.min.js}"></script>
+<script src="/assets/homepage/js/scrollax.min.js" th:src="@{/assets/homepage/js/scrollax.min.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="/assets/homepage/js/google-map.js" th:src="@{/assets/homepage/js/google-map.js}"></script>
+<script src="/assets/homepage/js/main.js" th:src="@{/assets/homepage/js/main.js}"></script>
+
+</body>
+</html>

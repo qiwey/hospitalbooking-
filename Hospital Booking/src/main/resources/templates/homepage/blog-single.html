@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:text="${home.hospitalName}"></title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/paging.scss}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/magnific-popup.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/aos.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/ionicons.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/jquery.timepicker.css}">
+
+
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/assets/homepage/css/style.css}">
+
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination {
+            text-align: center; /* căn giữa văn bản */
+            margin: 0 auto; /* căn giữa phần tử */
+            width: 50%; /* thiết lập chiều rộng (tuỳ chọn) */
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        .pagination-sub {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .page-item {
+            margin: 5px;
+        }
+
+        .page-link {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #00ce7c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        #blog-content img {
+            display: block;
+            margin: auto;
+            min-width: 60%;
+            max-width: 100%;
+        }
+
+        .page-link:hover {
+            background-color: #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{homepage/fragment/header.html :: header}"></div>
+<!-- END nav -->
+<section class="ftco-section">
+    <div class="container">
+        <div class=" mb-3">
+                <span class="mr-2"><a th:href="@{/tin-tuc}">Tin tức  <i class="ion-ios-arrow-forward"></i></a></span>
+                <span><a class="mr-2" th:text="${article.category.name}" th:href="@{/tin-tuc(category=${article.category.id})}"></a></span>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 ">
+                <div class="">
+                    <h1 class="mb-3 bread"><strong style="text-transform:uppercase;"
+                                                   th:text="${article.title}"></strong>
+                    </h1>
+                    <div class="d-flex justify-content-between">
+                        <div class="mb-4 d-inline-flex" th:text="${#temporals.dayOfWeekName(article.createdAt) + ' - ' + #temporals.format(article.createdAt, 'dd/MM/yyyy')}"></div>
+                        <div class="mb-4 d-inline-flex" th:text="${article.author.fullName}"></div>
+                    </div>
+                    <!--                <img alt="" class="img-fluid mb-4" style="width: 100%"-->
+                    <!--                     th:src="@{/i/{filename}(filename=${article.thumbnailUrl})}">-->
+                </div>
+                <div id="blog-content" class="mb-5" th:utext="${article.content}"></div>
+                <div class="comment-form-wrap pt-5">
+                    <h3 class="mb-2 h4 font-weight-bold">Để lại bình luận</h3>
+                    <form method="post" th:action="@{/add-comment}" th:object="${addcomments}">
+                        <input th:field="*{id}" type="hidden">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="fullName">Tên hiển thị</label>
+                                <input class="form-control" id="fullName" name="fullName" required
+                                       th:field="*{fullName}" type="text">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="email">Email</label>
+                                <input class="form-control" id="email" name="email" required th:field="*{email}"
+                                       type="email">
+                            </div>
+                        </div>
+                        <!--                            <div class="form-group">-->
+                        <!--                                <label for="phoneNumber">Số điện thoại</label>-->
+                        <!--                                <input class="form-control" id="phoneNumber" name="phoneNumber" required type="number">-->
+                        <!--                            </div>-->
+                        <div class="form-group">
+                            <label for="content">Nội dung</label>
+                            <textarea class="form-control" cols="30" id="content" name="content"
+                                      required rows="5"
+                                      th:field="*{content}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn py-3 px-5 btn-primary" type="submit" value="Đăng tải">
+                        </div>
+                    </form>
+                </div>
+                <div class="pt-5 mt-5">
+                    <h3 class="mb-5 h4 font-weight-bold" th:text="${comments.totalElements + ' Bình luận'}"></h3>
+                    <ul class="comment-list" id="comment">
+                        <li class="comment card" th:each="comment : ${comments}">
+                            <div class="comment-body card-body">
+                                <div class="vcard bio">
+                                    <img alt="Image placeholder"
+                                         src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png">
+                                </div>
+                                <h3><span th:text="${comment.fullName}"></span>
+                                    <span sec:authorize="hasAnyAuthority('ROLE_MEDIA', 'ROLE_ADMIN')"
+                                          th:text="${' - ' + comment.email}">
+                                    </span>
+                                </h3>
+                                <div class="meta mb-2 text-primary"
+                                     th:text="${#temporals.format(comment.createdAt, 'HH:mm - dd/MM/yyyy')}">January
+                                    03, 2019 at 2:21pm
+                                </div>
+                                <p th:text="${comment.content}"></p>
+                                <p sec:authorize="hasAnyAuthority('ROLE_MEDIA', 'ROLE_ADMIN')">
+                                    <a class="reply" th:href="@{/remove-comment/{id}(id=${comment.id})}">Xóa</a>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="block-27" th:if="${checkZeroCommentsize!=0}">
+                        <ul class="">
+                            <li class="page-item" th:if="${currentPage>1}">
+                                <a class=""
+                                    th:href="@{'?pageNo=' + ${currentPage - 1} + '#comment'}">
+                                    &laquo;</a></li>
+                            <li class="page-item"
+                                th:classappend="${currentPage== i ? 'active':''}"
+                                th:each="i:${#numbers.sequence(1,totalPageComment)}"><a
+                                    class="" th:href="@{'?pageNo='+${i} + '#comment'}" th:text="${i}"></a></li>
+                            <li class="page-item" th:if="${currentPage<totalPageComment}"><a
+                                    class="" th:href="@{'?pageNo='+${currentPage+1}+ '#comment'}">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 sidebar  mt-4">
+                <div class="sidebar-box ">
+                    <form class="search-form p-0" th:action="@{/tin-tuc}">
+                        <input name="category" th:value="${param.category}" type="hidden">
+                        <div class="form-group">
+                            <span class="icon icon-search"></span>
+                            <input class="form-control" name="search" placeholder="Tìm kiếm bài viết"
+                                   th:value="${param.search}" type="text">
+                        </div>
+                    </form>
+                </div>
+                <div class="sidebar-box ">
+                    <h3>Chuyên mục</h3>
+                    <ul class="categories">
+                        <li><a th:href="@{/tin-tuc}">Tất cả </a></li>
+                        <li th:each="category : ${categories}"><a th:href="@{/tin-tuc(category=${category.id})}">[[${category.name}]]
+                            <span th:text="${category.numberOfArticles}"></span></a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-box ">
+                    <h3 th:text="${'Bài viết về ' + article.category.name}"></h3>
+                    <div class="block-21 mb-4 d-flex" th:each="article : ${relates}">
+                        <a class="blog-img mr-4"
+                           th:style="'background-image: url(\'/i/' + ${article.thumbnailUrl} + '\');'"></a>
+                        <div class="text">
+                            <h3 class="heading">
+                                <a style="text-transform:uppercase;" th:href="@{/tin-tuc/{id}(id=${article.id})}"
+                                   th:text="${article.title}">
+                                    Even the all-powerful Pointing has no control about the blind texts
+                                </a>
+                            </h3>
+                            <div class="meta">
+                                <div><a><span class="icon-calendar"></span>
+                                    <span th:text="${#temporals.format(article.createAt, 'dd/mm/yyyy')}"></span>
+                                </a></div>
+                                <div><a><span class="icon-eye"></span> <span th:text="${article.viewCount}">
+                                </span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="~{homepage/fragment/footer.html :: footer}"></div>
+<!-- loader -->
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle class="path-bg" cx="24" cy="24" fill="none" r="22" stroke="#eeeeee" stroke-width="4"/>
+        <circle class="path" cx="24" cy="24" fill="none" r="22" stroke="#F96D00" stroke-miterlimit="10"
+                stroke-width="4"/>
+    </svg>
+</div>
+<script th:src="@{/assets/homepage/js/jquery.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/assets/homepage/js/popper.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.easing.1.3.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/assets/homepage/js/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/assets/homepage/js/aos.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{/assets/homepage/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/assets/homepage/js/jquery.timepicker.min.js}"></script>
+<script th:src="@{/assets/homepage/js/scrollax.min.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script th:src="@{/assets/homepage/js/google-map.js}"></script>
+<script th:src="@{/assets/homepage/js/main.js}"></script>
+</body>
+</html>

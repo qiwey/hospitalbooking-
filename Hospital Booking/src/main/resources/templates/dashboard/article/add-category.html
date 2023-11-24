@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<!-- add-department24:07-->
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            content="width=device-width, initial-scale=1.0, user-scalable=0"
+            name="viewport"
+    />
+    <link
+            rel="shortcut icon"
+            th:href="@{/assets/dashboard/img/favicon.ico}"
+            type="image/x-icon"
+    />
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/select2.min.css}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="@{/assets/dashboard/css/style.css}"
+            type="text/css"
+    />
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div
+            th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"
+    ></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h4 class="page-title">Thêm chuyên mục</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <form
+                            method="post"
+                            th:action="@{/dashboard/add-category}"
+                            th:object="${newCategoryDTO}"
+                    >
+                        <div class="form-group">
+                            <label>Tên chuyên mục</label>
+                            <input
+                                    class="form-control"
+                                    id="name"
+                                    name="name"
+                                    required
+                                    th:field="*{name}"
+                                    type="text"
+                            />
+                            <span
+                                    class="text-danger"
+                                    th:errors="*{name}"
+                                    th:if="${#fields.hasErrors('name')}"
+                            ></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mô tả</label>
+                            <textarea
+                                    class="form-control"
+                                    cols="30"
+                                    name="description"
+                                    required
+                                    rows="4"
+                                    th:field="*{description}"
+                                    th:text="${newCategoryDTO.description}"
+                            ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="display-block"
+                            >Trạng thái</label
+                            >
+                            <div class="form-check form-check-inline">
+                                <input
+                                        class="form-check-input"
+                                        id="product_active"
+                                        name="activeStatus"
+                                        required
+                                        th:checked="${newCategoryDTO.activeStatus} == null ? true : ${newCategoryDTO.activeStatus}"
+                                        th:field="*{activeStatus}"
+                                        type="radio"
+                                        value="true"
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="product_active"
+                                >
+                                    Hoạt động
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input
+                                        class="form-check-input"
+                                        id="product_inactive"
+                                        name="activeStatus"
+                                        required
+                                        th:checked="${newCategoryDTO.activeStatus} == null ? false : ${!newCategoryDTO.activeStatus}"
+                                        th:field="*{activeStatus}"
+                                        type="radio"
+                                        value="false"
+                                />
+                                <label
+                                        class="form-check-label"
+                                        for="product_inactive"
+                                >
+                                    Không hoạt động
+                                </label>
+                            </div>
+                        </div>
+                        <div class="m-t-20 text-center">
+                            <button class="btn btn-primary submit-btn">
+                                Tạo mới
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+<!-- add-department24:07-->
+</html>

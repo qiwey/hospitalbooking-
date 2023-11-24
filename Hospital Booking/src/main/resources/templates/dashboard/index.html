@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet" th:href="@{/assets/dashboard/css/bootstrap.min.css}">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="dash-widget">
+                        <span class="dash-widget-bg4"><i aria-hidden="true" class="fa fa-money"></i></span>
+                        <div class="dash-widget-info text-right">
+                            <h3 th:text="${#numbers.formatDecimal(totalOfPaymentsMonth, 0, 'POINT', 0, 'COMMA') + ' vnđ'}"
+                            >618</h3>
+                            <span class="widget-title4">Doanh thu tháng<i aria-hidden="true"
+                                                                          class="fa fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="dash-widget">
+                        <span class="dash-widget-bg1"><i aria-hidden="true" class="fa fa-stethoscope"></i></span>
+                        <div class="dash-widget-info text-right">
+                            <h3 th:text="${numOfAppointmentInMonth}">98</h3>
+                            <span class="widget-title1">Lịch khám tháng<i aria-hidden="true"
+                                                                          class="fa fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="dash-widget">
+                        <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                        <div class="dash-widget-info text-right">
+                            <h3 th:text="${numOfPatients}">1072</h3>
+                            <span class="widget-title2">Bệnh nhân <i aria-hidden="true" class="fa fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="dash-widget">
+                        <span class="dash-widget-bg3"><i aria-hidden="true" class="fa fa-user-md"></i></span>
+                        <div class="dash-widget-info text-right">
+                            <h3 th:text="${numOfDoctors}">72</h3>
+                            <span class="widget-title3">Bác sĩ <i aria-hidden="true" class="fa fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-title">
+                                <h4>Doanh thu (triệu vnđ)</h4>
+                            </div>
+                            <canvas id="linegraph"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="chart-title">
+                                <h4>Số lượng lịch khám</h4>
+                                <!--                                <div class="float-right">-->
+                                <!--                                    <ul class="chat-user-total">-->
+                                <!--                                        <li><i aria-hidden="true" class="fa fa-circle current-users"></i>ICU</li>-->
+                                <!--                                        <li><i aria-hidden="true" class="fa fa-circle old-users"></i> OPD</li>-->
+                                <!--                                    </ul>-->
+                                <!--                                </div>-->
+                            </div>
+                            <canvas id="bargraph"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="show fullscreen" id="ftco-loader">
+    <svg class="circular" height="48px" width="48px">
+        <circle
+                class="path-bg"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#eeeeee"
+                stroke-width="4"
+        />
+        <circle
+                class="path"
+                cx="24"
+                cy="24"
+                fill="none"
+                r="22"
+                stroke="#F96D00"
+                stroke-miterlimit="10"
+                stroke-width="4"
+        />
+    </svg>
+</div>
+<script
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/Chart.bundle.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/chart.js}"></script>
+<script
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+<script>
+    $(document).ready(function () {
+
+        // Bar Chart
+
+        var barChartData = {
+            labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
+            datasets: [{
+                label: 'Lượt khám',
+                backgroundColor: 'rgba(255, 188, 53, 0.5)',
+                borderColor: 'rgba(255, 188, 53, 1)',
+                borderWidth: 1,
+                data: [[${appointmentInYear}]]
+            }
+                // , {
+                //     label: 'Dataset 2',
+                //     backgroundColor: 'rgba(255, 188, 53, 0.5)',
+                //     borderColor: 'rgba(255, 188, 53, 1)',
+                //     borderWidth: 1,
+                //     data: [28, 48, 40, 19, 86, 27, 90]
+                // }
+            ]
+        };
+
+        var ctx = document.getElementById('bargraph').getContext('2d');
+        window.myBar = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            }
+        });
+
+        // Line Chart
+
+        var lineChartData = {
+            labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
+            datasets: [{
+                label: "Doanh thu",
+                backgroundColor: "rgba(0, 158, 251, 0.5)",
+                data: [[${amountInYear}]]
+            }
+                // , {
+                //     label: "My Second dataset",
+                //     backgroundColor: "rgba(255, 188, 53, 0.5)",
+                //     fill: true,
+                //     data: [28, 48, 40, 19, 86, 27, 20, 90, 50, 20, 90, 20]
+                // }
+            ]
+        };
+
+        var linectx = document.getElementById('linegraph').getContext('2d');
+        window.myLine = new Chart(linectx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                }
+            }
+        });
+
+        // Bar Chart 2
+
+        barChart();
+
+        $(window).resize(function () {
+            barChart();
+        });
+
+        function barChart() {
+            $('.bar-chart').find('.item-progress').each(function () {
+                var itemProgress = $(this),
+                    itemProgressWidth = $(this).parent().width() * ($(this).data('percent') / 100);
+                itemProgress.css('width', itemProgressWidth);
+            });
+        };
+    });
+</script>
+</body>
+
+</html>

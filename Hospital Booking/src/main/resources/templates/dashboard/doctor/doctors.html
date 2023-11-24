@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        xmlns:th="http://www.thymeleaf.org"
+>
+
+<!-- doctors23:12-->
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
+    <link href="assets/img/favicon.ico" rel="shortcut icon"
+          th:href="@{/assets/dashboard/img/favicon.ico}"
+          type="image/x-icon">
+    <title>Logo - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap.min.css}"
+          type="text/css">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/font-awesome.min.css}"
+          type="text/css">
+    <link href="assets/css/select2.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/select2.min.css}"
+          type="text/css">
+    <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/bootstrap-datetimepicker.min.css}"
+          type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet"
+          th:href="@{/assets/dashboard/css/style.css}"
+          type="text/css">
+</head>
+
+<body>
+<div class="main-wrapper">
+    <div th:replace="~{dashboard/fragment/header.html :: header}"></div>
+    <div th:replace="~{dashboard/fragment/sidebar.html :: sidebar}"></div>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Các bác sĩ</h4>
+                </div>
+                <div class="col-sm-8 col-9 text-right m-b-20">
+                    <a class="btn btn-primary btn-rounded float-right" th:href="@{/add-doctor}"><i
+                            class="fa fa-plus"></i>
+                        Thêm bác sĩ</a>
+                </div>
+            </div>
+            <div class="row doctor-grid">
+                <div class="col-md-4 col-sm-4  col-lg-3" th:each="doctor : ${doctors}">
+                    <div class="profile-widget">
+                        <div class="doctor-img">
+                            <a class="avatar" th:href="@{/doctor(id=${doctor.id})}">
+                                <img alt=""
+                                     th:if="${doctor.profilePicture}"
+                                     th:src="@{'/i/' + ${doctor.profilePicture}}"/>
+                            </a>
+                        </div>
+                        <div class="dropdown profile-action">
+                            <a aria-expanded="false" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                               href="#">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" th:href="@{/edit-doctor(id=${doctor.id})}">
+                                    <i class="fa fa-pencil m-r-5"></i> Edit
+                                </a>
+                                <!--                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor">-->
+                                <!--                                    <i class="fa fa-trash-o m-r-5"></i> Delete-->
+                                <!--                                </a>-->
+                            </div>
+                        </div>
+                        <h4 class="doctor-name text-ellipsis">
+                            <a th:href="@{/doctor(id=${doctor.id})}" th:text="${doctor.fullName}">Cristina Groves</a>
+                        </h4>
+                        <div class="doc-prof" th:text="${doctor.departmentName}">Gynecologist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script
+        src="assets/js/jquery-3.2.1.min.js"
+        th:src="@{/assets/dashboard/js/jquery-3.2.1.min.js}"></script>
+<script
+        src="assets/js/popper.min.js"
+        th:src="@{/assets/dashboard/js/popper.min.js}"></script>
+<script
+        src="assets/js/bootstrap.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap.min.js}"></script>
+<script
+        src="assets/js/jquery.slimscroll.js"
+        th:src="@{/assets/dashboard/js/jquery.slimscroll.js}"></script>
+<script
+        src="assets/js/select2.min.js"
+        th:src="@{/assets/dashboard/js/select2.min.js}"></script>
+<script
+        src="assets/js/moment.min.js"
+        th:src="@{/assets/dashboard/js/moment.min.js}"></script>
+<script
+        src="assets/js/bootstrap-datetimepicker.min.js"
+        th:src="@{/assets/dashboard/js/bootstrap-datetimepicker.min.js}"></script>
+<script
+        src="assets/js/app.js"
+        th:src="@{/assets/dashboard/js/app.js}"></script>
+</body>
+
+<!-- doctors23:17-->
+</html>
