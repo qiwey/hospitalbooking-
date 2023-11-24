@@ -7,7 +7,6 @@ The Hospital Booking System is a web-based application designed to streamline th
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Features
@@ -22,11 +21,10 @@ The Hospital Booking System is a web-based application designed to streamline th
   - HTML
   - CSS
   - JavaScript
-  - [Frontend Framework - React](https://reactjs.org/)
 
 - **Backend:**
   - [Backend Framework - Spring Boot](https://spring.io/projects/spring-boot)
-  - Java
+  - Java IntelliJIDEA
   - [Database - MySQL](https://www.mysql.com/)
 
 - **Others:**
@@ -43,15 +41,8 @@ The Hospital Booking System is a web-based application designed to streamline th
 ## Usage
 1. Start the backend server.
 2. Start the frontend application.
-3. Access the application in your web browser at `http://localhost:3000` (or the specified port).
-
-## Contributing
-Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/new-feature`
-3. Make your changes and commit them: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature/new-feature`
-5. Submit a pull request.
+3. Access the application in your web browser at `http://localhost:8080` (or the specified port).
+4. MySQL password : Myp@ssword
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
